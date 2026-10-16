@@ -40,4 +40,5 @@ human context: what was done, why, and by which PR.
   in the slice, `src/domain/random` removed); class, hero-state and component diagrams rewritten
   (Session, Hero units, Clock owned by app, Dead/FlagSlide/AutoWalk at hero level). Report:
   `docs/architecture/review-local.md`. Tests, coverage and SonarQube: not applicable (docs-only).
-- Pending: owner approval to create the public GitHub repository and the PR.
+- Merged: public repo `benoit-bremaud/retro-plumber` created, PR #1 squash-merged (23e7cbd), branch deleted.
+- Pending: owner acceptance of ADR-0001/0002/0003/0005; SECURITY.md, CONTRIBUTING.md and security CI; cross-project shared-package issue on retro-shmup. Next code brick waits for retro-shmup's vertical slice.
