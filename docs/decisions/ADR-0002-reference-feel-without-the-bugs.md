@@ -25,8 +25,8 @@ included; **C** our own "modern" tuning (coyote time, jump buffering, float phys
 
 Points: A = 175 + 100 + 100 + 60 + 50; B = 175 + 40 + 80 + 30 + 20; C = 70 + 100 + 60 + 45 + 20.
 
-Sensitivity: B gets closer only if *fairness* weighs 0 and a "speedrun-exact" goal is added; no such
-goal exists.
+Sensitivity: with *fairness* at 0 the gap is still 80 points (A 385, B 305); only an added
+"speedrun-exact" goal could flip it, and none exists.
 
 **Fallback:** B (345), as an optional "authentic" toggle if players ask for the quirks. It is a
 drop-in variant of the physics module (one flag), not a design change.

@@ -22,14 +22,14 @@ Pillars:
    1985 home-console reference (study §2–§3), so that the controls feel the way players remember.
 2. **Without the bugs.** Known defects and quirks are removed (§11, ADR-0002).
 3. **Original identity.** Our own character, enemies, levels, art, sound and name (ADR-0004).
-4. **Deterministic and testable.** Fixed 60 Hz simulation in fixed-point integers and a seeded
-   RNG: the same inputs replay the same run (CLAUDE.md, ADR-0005).
+4. **Deterministic and testable.** Fixed 60 Hz simulation in fixed-point integers (any future
+   random rule draws from a seeded RNG): the same inputs replay the same run (CLAUDE.md, ADR-0005).
 5. **Clean architecture.** The rules below live in the pure domain; the browser is an adapter
    (CLAUDE.md § Architecture).
 
 ## 2. Behavioural reference and IP boundary
 
-The behavioural evidence is the community documentation (SMBpedia) and doppelganger's public
+The behavioural evidence is the community documentation (the community movement documentation) and doppelganger's public
 disassembly, read for verification only (study § Sources). Nothing from them is copied as code or
 data: tables are re-expressed in our own units and structures.
 
@@ -59,9 +59,20 @@ The vertical slice uses only the walker and the shelled walker (§10). Other rol
 
 ## 4. Hero movement
 
-All values in **fixed-point integers**. Horizontal speed in 1/16 px per frame; accelerations in
-1/4096 px/frame²; vertical speed in 1/256 px per frame internally (study §1). Values below are
-taken from the study and **converted to our units**.
+All values are **fixed-point integers**, converted from the study (§1 there). Storage units
+*(proposed)*:
+
+| Quantity | Stored as | Note |
+|---|---|---|
+| Position `x`, `y` | 1/256 px | on-screen pixel = value >> 8 |
+| Horizontal speed `vx` | speed units of 1/16 px/frame, plus an 8-bit fraction `vxFrac` | caps 24 / 40 are in speed units; per frame `x += vx * 16` |
+| Horizontal acceleration | added to `vxFrac` each frame; carry/borrow moves `vx` by 1 unit | table values 228 / 152 / 208 are in 1/256 speed unit = 1/4096 px/frame² |
+| Vertical speed `vy` | 1/256 px/frame | −4 px/frame = −1024; terminal 4 px/frame = 1024 |
+| Gravity | added to `vy` each frame | table values 32 … 144 are already in 1/256 px/frame² |
+
+Hero state beyond position and speed (§4.3): `facing`, `runHoldFrames`, `gravityRow` (chosen at
+take-off), `takeoffY`, `jumpWasHeld`, `invulnFrames`. Sub-pixel rounding differences against the
+reference are checked by a golden-trajectory test (ADR-0005).
 
 ### 4.1 Horizontal
 
@@ -160,7 +171,8 @@ over → name entry (if top 10) → Hall of fame → Title. Flag → tally → n
 the last level in the slice). Formalised as a state diagram in
 `docs/architecture/diagrams/system/`.
 
-Meta features copied from retro-shmup (ADR-0003): keyboard / gamepad / touch input with
+Meta features reused from retro-shmup (copy or shared package decided at the first code brick,
+ADR-0003): keyboard / gamepad / touch input with
 rebinding, local save (options, top 10), name entry, EN/FR catalogue, synthesised audio.
 
 Touch input *(proposed)*: on-screen left/right pad + jump + run buttons.
@@ -179,7 +191,7 @@ their unit tests, and a scripted input run replays identically.
 | Vertical cap check lets speed reach 5 px/frame | §4.2 — clean 4 px/frame clamp |
 | No stop-at-zero clamp (sub-pixel oscillation at rest) | §4.1 — clamp to 0 |
 | Wall / corner clips | §5 — axis-separated collision + corner tolerance |
-| Wrong warps, "minus" level | none (no warp zones in the slice) |
+| Wrong-warp glitch levels | none (no warp zones in the slice) |
 | Sprite-per-line flicker | none (canvas has no sprite limit) |
 | PAL timing differences | fixed 60 Hz everywhere |
 
@@ -189,7 +201,7 @@ when the run timer expires, momentum kept in the air.
 ## 12. Non-functional
 
 - 60 fps on a 2019 mid-range phone; ≤ 2 ms of logic per step; no allocation in the loop.
-- Deterministic: a seed and an input script replay the same run (ADR-0005).
+- Deterministic: an input script replays the same run (ADR-0005).
 - Accessibility: reduced flash, remappable input, toggleable screen shake *(ours)*.
 
 ## Decision record

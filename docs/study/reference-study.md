@@ -49,7 +49,7 @@ Acceleration table — **verified in the disassembly** (`FrictionData`, `PlayerP
 `ImposeFriction`). One value is used both to accelerate (direction held) and to decelerate (no
 direction, on the ground). It is added to the 1/256 accumulator, so px/frame² = value / 4096.
 
-| Index | Player 1 | px/frame² | Player 2 (alternate feel, from SMBpedia) |
+| Index | Player 1 | px/frame² | Player 2 (alternate feel, from the community documentation) |
 |---|---|---|---|
 | 0 | 0xE4 | 0.0557 | 0xB4 |
 | 1 | 0x98 | 0.0371 | 0x68 |
@@ -148,10 +148,10 @@ small with a short invincibility. Star item: temporary invincibility. Extra-life
 
 ## 6. Known reference bugs and quirks (candidates to drop)
 
-Same policy as retro-maze (faithful rules, without the original bugs) — to be confirmed by ADR.
+Same policy as retro-maze (faithful rules, without the original bugs) — decided in ADR-0002.
 
 - Flawed vertical-speed cap (§3).
-- Wall clips / corner clips and the "minus world" wrong warp.
+- Wall clips / corner clips and the wrong-warp glitch level.
 - 3-objects-per-column sprite limit and flicker.
 - Arbitrary-code-execution and RAM-dependent tricks.
 
@@ -159,7 +159,7 @@ Same policy as retro-maze (faithful rules, without the original bugs) — to be 
 
 1. Stop-at-zero with no input (§2): clean clamp to 0 instead of the sub-pixel oscillation.
 2. Our terminal fall speed: clean 4 px/frame cap (drops the 5 px/frame overshoot), or keep the
-   overshoot for an exact feel? To decide by ADR.
+   overshoot for an exact feel? Decided in ADR-0002: clean clamp.
 3. Keep the second player's "alternate feel" table as a selectable option, or one feel only?
 4. Fixed 60 Hz for every region (yes, recommended — we are not emulating PAL).
 5. Vertical slice content: one overworld level with walker + shelled walker, bricks, question
@@ -175,6 +175,8 @@ Same policy as retro-maze (faithful rules, without the original bugs) — to be 
 - Release date (EU 15 May 1987): <https://www.mariowiki.com/Super_Mario_Bros.>
 - doppelganger, "SMBDIS.ASM — a comprehensive disassembly" (2012), mirror:
   <https://gist.github.com/1wErt3r/4048722> — routines `PlayerPhysicsSub`, `ImposeFriction`,
-  `JumpSwimSub`, `MoveObjectHorizontally`, `MovePlayerVertically`, `ImposeGravity`. Read for
+  `JumpSwimSub`, `ProcJumping`, `GetPlayerAnimSpeed`, `ProcSkid`, `MoveObjectHorizontally`,
+  `MovePlayerVertically`, `ImposeGravity`, and the tables `FrictionData`, `JumpMForceData`,
+  `FallMForceData`. Read for
   verification only; no code or data from it is copied into this project.
 - SourceGen port of the same disassembly: <https://6502disassembly.com/nes-smb/>.

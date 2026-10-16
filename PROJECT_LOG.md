@@ -35,5 +35,9 @@ human context: what was done, why, and by which PR.
   layout (475; flat option corrected 310 → 320). Each ADR records its runner-up as fallback.
 - UML (Mermaid, render-checked with mmdc): use cases, game flow, components, domain classes,
   hero states.
-- Pending: pre-push review; pre-push review; owner approval to create the public GitHub
-  repository and the PR.
+- Local review (design + docs) reconciled: GDD units table and hero fields added; ADR sensitivity
+  checks and option labels fixed (ADR-0003 D → C); RNG wording made conditional (no random rule
+  in the slice, `src/domain/random` removed); class, hero-state and component diagrams rewritten
+  (Session, Hero units, Clock owned by app, Dead/FlagSlide/AutoWalk at hero level). Report:
+  `docs/architecture/review-local.md`. Tests, coverage and SonarQube: not applicable (docs-only).
+- Pending: owner approval to create the public GitHub repository and the PR.

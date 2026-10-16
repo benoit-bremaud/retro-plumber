@@ -5,7 +5,7 @@
 **Name:** retro-plumber (codename, owner choice 2026-10-16 — the commercial title is still open).
 **Type:** side-scrolling platformer for the browser, in the tradition of the 1985 home-console
 genre, with original character, levels, art and sound. Planned stack: TypeScript strict + native
-Canvas 2D + Vite, same as `../retro-shmup` (to be recorded in ADR-0001).
+Canvas 2D + Vite, same as `../retro-shmup` (see ADR-0001, proposed).
 **Scope:** a faithful-feel platformer; a first vertical slice of one overworld level, then
 extension level by level.
 **Status:** **brick 0 — design study** (GDD, ADRs, UML study). No game code until
@@ -20,13 +20,13 @@ this repository.
 ## Architecture — Clean everywhere, SOLID always (owner rule 2026-10-16)
 
 **The dependency rule never bends:** source dependencies point inward,
-`app → adapters → domain`, never the reverse.
+`app → {adapters, domain}`, `adapters → domain`, `domain → ∅`; never the reverse.
 
 - `src/domain/` is pure TypeScript: no `window`, `document`, `canvas`, `AudioContext`,
   `localStorage`, `performance`, `Date.now()` or `Math.random()`. Enforced by a dedicated
   `tsconfig.domain.json` (no DOM lib) and an ESLint import boundary, as in retro-shmup.
 - `src/domain/ports/` declares the interfaces the domain needs (`RenderPort`, `InputPort`,
-  `AudioPort`, `StoragePort`, clock). Each port is small and client-specific (ISP).
+  `AudioPort`, `StoragePort`; the frame loop in `src/app/` owns its own small `Clock` interface). Each port is small and client-specific (ISP).
 - `src/adapters/` implements the ports with browser APIs; adapters depend on the domain, never
   on each other.
 - `src/app/` is the composition root: it builds the adapters, injects them (DIP) and runs the
@@ -44,7 +44,8 @@ this repository.
 
 **Proportionality (KISS / YAGNI):** a port exists only where a real seam exists (browser API or
 test substitution). No empty pass-through layers, no abstraction "for later". Generic modules
-are copied from retro-shmup, not shared, until a rule-of-three case justifies a package.
+are reused from retro-shmup; copy or shared package is decided at the first code brick
+(ADR-0003).
 
 ## Non-negotiables (project)
 
@@ -58,12 +59,13 @@ are copied from retro-shmup, not shared, until a rule-of-three case justifies a 
 - **Validated decisions are not reopened silently.** Changing an ADR or a GDD rule requires a
   superseding ADR or a GDD revision in its own PR.
 - **Fixed 60 Hz timestep, deterministic simulation.** Accumulator loop, sub-pixel fixed-point
-  physics, seeded RNG. The same seed and input script must replay identically.
+  physics; any future random rule draws from a seeded RNG. The same input script must replay
+  identically.
 - **No allocation inside the game loop.** Preallocated entity pools, index loops only.
 - **Every player-facing string goes through the message catalogue** (EN default, FR).
 - **Every game-feel effect is toggleable** and respects photosensitivity options.
 - **Tests:** domain unit tests, headless level-simulation tests with scripted inputs and a fixed
-  seed, one browser smoke test. Render and audio are mocked at their ports, never the domain.
+  one browser smoke test. Render and audio are mocked at their ports, never the domain.
 
 ## Repository layout
 
@@ -73,7 +75,7 @@ docs/study/         behavioural study of the reference genre (physics, enemies, 
 docs/decisions/     ADRs (Nygard format, ADR-NNNN-<slug>.md)
 docs/architecture/  UML diagrams (Mermaid) and QA evidence (qa/)
 public/assets/      original sprites and audio
-src/domain/         pure rules and ports: physics, level, entities, game, scenes, random, save,
+src/domain/         pure rules and ports: physics, level, entities, game, scenes, save,
                     i18n, audio                                          — later bricks
 src/adapters/       browser implementations of the ports                — later bricks
 src/app/            composition root and frame loop                     — later bricks

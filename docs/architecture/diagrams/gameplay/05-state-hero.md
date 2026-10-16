@@ -5,20 +5,26 @@
 
 ## Context
 
-Two orthogonal regions: the hero's size (power-up state) and its motion state. The motion
-values of each state are the GDD §4 tables.
+The hero's life cycle at the top level, then two orthogonal regions while alive: size (power-up
+state) and motion. The motion values of each state are the GDD §4 tables.
 
 ## Diagram
 
 ```mermaid
 stateDiagram-v2
-    state Hero {
+    [*] --> Alive
+    Alive --> Dead: hit when small, pit, timer 0
+    Alive --> FlagSlide: touches the flag pole
+    FlagSlide --> AutoWalk: reaches the ground
+    AutoWalk --> [*]: enters the goal house
+    Dead --> [*]
+
+    state Alive {
         state Size {
             [*] --> Small
             Small --> Big: growth item
             Big --> SmallInvulnerable: hit
             SmallInvulnerable --> Small: after 2 s
-            Small --> Dead: hit
         }
         --
         state Motion {
@@ -29,7 +35,6 @@ stateDiagram-v2
             Falling --> Grounded: lands
             Rising --> Falling: head bump
             Falling --> Rising: stomp bounce
-            Falling --> [*]: falls into a pit, life lost
         }
     }
 ```
@@ -39,4 +44,6 @@ stateDiagram-v2
 - `Rising` uses the "held" gravity of the take-off row, `Falling` the "released" one (GDD §4.2);
   the pair chosen at take-off is kept until the next jump, even across a stomp bounce.
 - `Grounded` covers walk, run and skid; they are speed ranges, not separate states (GDD §4.1).
+- A hit during `SmallInvulnerable` is ignored; a growth item picked up then makes the hero `Big`
+  and ends the invulnerability *(proposed)*.
 - Shooter size is out of the slice (GDD §4.3).

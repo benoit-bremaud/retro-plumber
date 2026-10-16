@@ -21,6 +21,9 @@ Options for the codename: **A** `retro-platformer`; **B** `retro-plumber`; **C**
 | Availability (GitHub / npm, estimate, not checked) | 20 | 3 — common word | 4 | 4 |
 | **Total / 500** | 100 | 440 | 340 | 430 |
 
+Sensitivity: B would lead only if *Availability* weighed 60 while both IP criteria fell to 5 —
+contrary to the IP rule. B is the owner's choice, not the matrix's.
+
 ## Decision
 
 **`retro-plumber`**, chosen by the owner over the matrix's top score. The owner's choice stands; the

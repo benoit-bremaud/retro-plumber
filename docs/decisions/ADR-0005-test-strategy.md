@@ -9,7 +9,7 @@ The global testing strategy (test pyramid, FIRST, mock only the boundaries) and 
 gate (coverage ≥ 80 %, target ~100 %, doc coverage ≥ 90 %) apply.
 
 Options: **A** pyramid — domain unit tests, headless level-simulation tests with scripted inputs
-and a fixed seed, one browser smoke test; **B** mostly browser E2E tests; **C** unit tests only.
+one browser smoke test; **B** mostly browser E2E tests; **C** unit tests only.
 
 ## MCDA
 
@@ -24,19 +24,23 @@ and a fixed seed, one browser smoke test; **B** mostly browser E2E tests; **C** 
 
 Points: A = 150 + 125 + 100 + 60 + 40; B = 90 + 25 + 80 + 75 + 20; C = 90 + 125 + 80 + 0 + 50.
 
-**Fallback:** C (345) — not a real alternative: it misses the build check; recorded for
-completeness only.
+Sensitivity: B overtakes A only if *Proves the real build runs* weighs over 60, more than four
+times its current weight.
+
+**Fallback:** C (345), unit-only: a drop-in (delete the smoke test) that leaves the real build
+unchecked.
 
 ## Decision
 
 - **Unit (Vitest), domain:** every GDD §4 table row, every §11 replacement rule, collision,
   enemies, scoring. Feel values are tested against the study numbers.
-- **Simulation (Vitest, headless):** scripted input + fixed seed → recorded hero trajectory and
+- **Simulation (Vitest, headless):** scripted input → recorded hero trajectory and
   score; the same script must replay identically (golden files).
 - **Smoke (Playwright):** one test on the real build, every browser engine, title → playing.
 - Render and audio are mocked at their ports, never the domain.
 
 ## Consequences
 
-- The domain must expose a step function `step(state, input)` with no hidden clock.
+- The domain exposes an in-place step, `step(run, inputSnapshot)`, with no hidden clock; the app
+  reads `InputPort` and passes the snapshot.
 - Golden trajectories are regenerated only by an explicit, reviewed command.

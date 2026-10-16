@@ -6,21 +6,29 @@
 ## Context
 
 The main domain types of the vertical slice and their relations. Rendering, audio and storage
-are not shown (ports, see `../system/03-component.md`).
+are not shown (ports, see `../system/03-component.md`). Units of the numeric fields: GDD §4.
 
 ## Diagram
 
 ```mermaid
 classDiagram
-    class LevelRun {
-        +step(input) void
+    class Session {
         +score int
         +coins int
-        +timer int
+        +lives int
     }
-    class Level {
-        +width int
+    class LevelRun {
+        +timerFrames int
+        +step(inputSnapshot) void
+    }
+    class LevelData {
+        <<immutable>>
+        +grid string[]
+        +spawns Spawn[]
+    }
+    class TileGrid {
         +tileAt(col, row) TileKind
+        +setTile(col, row, kind) void
     }
     class TileKind {
         <<union>>
@@ -28,10 +36,12 @@ classDiagram
         Ground
         HardBlock
         Brick
-        ItemBlock
+        ItemBlock(content)
+        UsedBlock
         HiddenBlock
         Pipe
         FlagPole
+        GoalHouse
     }
     class Camera {
         +x int
@@ -41,9 +51,16 @@ classDiagram
         +x int
         +y int
         +vx int
+        +vxFrac int
         +vy int
+        +facing Dir
+        +runHoldFrames int
+        +gravityRow int
+        +takeoffY int
+        +jumpWasHeld bool
+        +invulnFrames int
+        +stompChain int
         +size HeroSize
-        +state HeroState
     }
     class MovementTables {
         <<constants>>
@@ -53,43 +70,75 @@ classDiagram
         gravities
     }
     class HeroPhysics {
+        <<module>>
         +stepHorizontal(hero, input) void
         +stepVertical(hero, input) void
     }
     class TileCollision {
-        +resolveX(body, level) void
-        +resolveY(body, level) void
+        <<module>>
+        +resolveX(body, grid) void
+        +resolveY(body, grid) void
     }
     class EnemyPool {
         +activate(spawn) void
-        +stepAll(level) void
+        +stepAll(grid) void
     }
     class EnemyKind {
         <<union>>
         Walker
         ShelledWalker
-        Shell
+        Shell(mode, chainIndex)
     }
-    class ScoreChain {
-        +onStomp() int
-        +reset() void
+    class ItemPool {
+        +activate(kind, col, row) void
+        +stepAll(grid) void
     }
-    LevelRun *-- Level
+    class ItemKind {
+        <<union>>
+        Coin
+        GrowthItem
+    }
+    class BlockBump {
+        +col int
+        +row int
+        +frames int
+    }
+    class Contacts {
+        <<module>>
+        +heroVsEnemies(hero, enemies) void
+        +heroVsItems(hero, items) void
+    }
+    class ScoreTables {
+        <<constants>>
+        +chainPoints(index) int
+        +flagBandPoints(heightPx) int
+    }
+    Session o-- LevelRun
+    LevelRun *-- TileGrid
+    LevelRun ..> LevelData
     LevelRun *-- Hero
     LevelRun *-- Camera
     LevelRun *-- EnemyPool
-    LevelRun *-- ScoreChain
-    Level --> TileKind
+    LevelRun *-- ItemPool
+    LevelRun *-- BlockBump
+    TileGrid --> TileKind
     HeroPhysics ..> MovementTables
     HeroPhysics ..> Hero
-    TileCollision ..> Level
+    TileCollision ..> TileGrid
+    Contacts ..> ScoreTables
     EnemyPool --> EnemyKind
+    ItemPool --> ItemKind
 ```
 
 ## Notes
 
 - All positions and speeds are fixed-point integers (GDD §4); no float in the domain.
-- `TileKind` and `EnemyKind` are discriminated unions with behaviour tables: a new enemy or tile
-  is a new entry, not a new branch in the loop (open/closed).
-- `EnemyPool` is preallocated (no allocation in the loop).
-- `RandomSource` (seeded) is omitted: the slice has no random rule yet (YAGNI).
+- `Session` outlives a level: score, coins and lives survive a death and the next level (GDD §8,
+  §9). A new `LevelRun` is built from `LevelData` for each attempt.
+- `TileKind`, `EnemyKind` and `ItemKind` are discriminated unions with behaviour tables: a new
+  tile, enemy or item is a new entry, not a new branch in the loop (open/closed).
+- Pools are preallocated (no allocation in the loop). The stomp chain counter lives on the hero
+  (reset on landing); each kicked shell keeps its own `chainIndex`.
+- `BlockBump` is the short-lived record that lets a bumped block hurt the enemy standing on it.
+- `RandomSource` (seeded) is omitted: the slice has no random rule (YAGNI).
+- The flag sequence (slide, tally) is a `LevelRun` phase, see `05-state-hero.md`.

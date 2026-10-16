@@ -33,13 +33,14 @@ modes orchestrating the same rules): a design change, the domain is untouched.
 ## Decision
 
 ```
-src/domain/   pure rules (physics, level, entities, game, scenes, random, save, i18n, audio) and ports/
+src/domain/   pure rules (physics, level, entities, game, scenes, save, i18n, audio) and ports/
 src/adapters/ browser implementations of the ports
 src/app/      composition root and frame loop
 ```
 
-Dependencies point `app → adapters → domain`. The domain is compiled with a `tsconfig.domain.json`
-without the DOM lib, and an ESLint import boundary forbids `domain → adapters|app`.
+Dependencies point inward: `app → {adapters, domain}`, `adapters → domain`, `domain → ∅`. The domain is compiled with a `tsconfig.domain.json`
+without the DOM lib, and an ESLint import boundary forbids `domain → adapters|app`, `adapters → app` and adapter → adapter. The frame loop
+declares its own small `Clock` interface in `src/app/` (its only user); it is not a domain port.
 
 ## Consequences
 

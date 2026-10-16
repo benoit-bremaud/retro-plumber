@@ -15,12 +15,12 @@ The modules will still change in retro-shmup until then, and the other games' co
 shown how much they drift.
 
 Options: **A** copy and adapt now (record a source SHA); **B** decide now to extract a shared
-package; **D** defer the decision to the first code brick of retro-plumber, with this matrix as
+package; **C** defer the decision to the first code brick of retro-plumber, with this matrix as
 input.
 
 ## MCDA
 
-| Criterion | Weight | A Copy now | B Shared package now | D Defer |
+| Criterion | Weight | A Copy now | B Shared package now | C Defer |
 |---|---|---|---|---|
 | Decision on real evidence (drift seen in the copies) | 30 | 2 — decided before the evidence exists | 2 — same | 5 — decided when the drift is known |
 | DRY across 4+ games | 25 | 1 — a fourth copy | 5 | 3 — leaves the door open |
@@ -28,9 +28,9 @@ input.
 | Decoupling between games | 20 | 5 | 2 | 4 — chosen later on evidence |
 | **Total / 500** | 100 | 260 | 250 | **430** |
 
-Points: A = 60 + 25 + 75 + 100; B = 60 + 125 + 25 + 40; D = 150 + 75 + 125 + 80.
+Points: A = 60 + 25 + 75 + 100; B = 60 + 125 + 25 + 40; C = 150 + 75 + 125 + 80.
 
-Sensitivity: B overtakes D only if *DRY* becomes the dominant criterion, which would also make it the
+Sensitivity: B overtakes C only if *DRY* becomes the dominant criterion, which would also make it the
 decision for the sibling games — a cross-project choice, not one for this repository alone.
 
 **Fallback:** A (260), copy and adapt as the siblings did: a drop-in (copy the files, record
