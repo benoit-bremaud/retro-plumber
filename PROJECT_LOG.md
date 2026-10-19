@@ -69,3 +69,13 @@ human context: what was done, why, and by which PR.
   `docs/architecture/review-local.md`. Tests, coverage and SonarQube: not applicable (docs-only).
 - Merged: public repo `benoit-bremaud/retro-plumber` created, PR #1 squash-merged (23e7cbd), branch deleted.
 - Pending: owner acceptance of ADR-0001/0002/0003/0005; SECURITY.md, CONTRIBUTING.md and security CI; cross-project shared-package issue on retro-shmup. Next code brick waits for retro-shmup's vertical slice.
+
+## 2026-10-19 (brick 4, branch `docs/uml-specs`, issue #6)
+
+- Cockburn specifications for UC1–UC6 (`docs/architecture/use-case-specifications.md`) and the
+  traceability matrix (`traceability-matrix.md`) with recorded gaps G1–G3 and open questions OQ1–OQ3.
+- MCDA D1 single spec file (395 vs 375, fragile under traceability weight 40) and D2 three
+  sequences + one data-flow (400 vs 340); weights validated by the owner.
+- New diagrams: 06 tick sequence, 07 name entry, 08 rebind, 09 persistence data-flow.
+  Brick-3 follow-ups fixed: growth item during invulnerability (hero), pause/Esc/auto-pause triggers (flow).
+- review-local green after fixes (Must 2 + Should 12 fixed), PR #16. Owner validated the specs and matrix: status Accepted.

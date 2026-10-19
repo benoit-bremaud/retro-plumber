@@ -15,8 +15,8 @@ stateDiagram-v2
     [*] --> Title
     Title --> LevelIntro: start
     LevelIntro --> Playing: after 120 frames
-    Playing --> Paused: pause
-    Paused --> Playing: resume
+    Playing --> Paused: pause key, Esc menu, focus lost or page hidden
+    Paused --> Playing: pause key, resume, tap to resume
     Playing --> Dying: pit, enemy hit when small, timer 0
     Dying --> LevelIntro: lives left
     Dying --> GameOver: no life left
@@ -33,7 +33,7 @@ stateDiagram-v2
 ## Notes
 
 - `EndSequence` runs the hero states FlagSlide then AutoWalk (see `../gameplay/05-state-hero.md`) with input locked; the timer is frozen until the tally.
-
 - One scene active at a time; each scene is a domain object driven by `step(state, input)`
   (ADR-0005), rendered through `RenderPort`.
 - The slice has one level, so `Tally` always goes back to `Title` until more levels exist.
+- No options or menu scene is drawn yet: where it is reached is open question OQ2 in the use-case specifications.

@@ -33,6 +33,9 @@ flowchart LR
     Player --> UC4
     Player --> UC5
     Player --> UC6
+    UC2 -.->|"«extend» at playing"| UC1
+    UC3 -.->|"«extend» at game-over"| UC1
+    UC3 -.->|"«include»"| UC4
 ```
 
 ## Notes
