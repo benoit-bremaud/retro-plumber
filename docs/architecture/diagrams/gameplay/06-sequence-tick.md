@@ -22,7 +22,7 @@ sequenceDiagram
     Clock-->>FL: elapsed time
     loop while accumulator >= 1/60 s
         FL->>In: read snapshot
-        In-->>FL: InputSnapshot (pause bit included)
+        In-->>FL: InputSnapshot (toggle bit and auto-pause bit included)
         FL->>Game: step(state, snapshot)
         alt paused
             Game-->>FL: state unchanged (only the pause lock counts)
@@ -40,8 +40,9 @@ sequenceDiagram
 - Fixed timestep with an accumulator (ADR-0005, CLAUDE.md); `FrameLoop` pulls the time from the
   `Clock` interface it owns, so no adapter calls the app; events are plain data returned by `step`,
   the app forwards them to `AudioPort` (the domain never calls the adapter).
-- Auto-pause (focus lost, page hidden) is detected by the input adapter and delivered as a pause
-  bit in the snapshot, so it is replayed like any input (GDD §9).
-- The pause toggle is just a pause bit in the snapshot; the `alt` shows what `step` does with it.
+- Auto-pause (focus lost, page hidden) is detected by the input adapter and delivered as a
+  separate auto-pause bit in the snapshot (it can only pause), so it is replayed like any input
+  (GDD §9); the manual toggle has its own bit. The `alt` shows what `step` does with the pause
+  state; the two-bit contract is detailed in [14](14-sequence-pause-resume.md).
 - Zoom-ins: [10](10-sequence-collisions.md) collisions, [11](11-sequence-item-pickup.md) items, [12](12-sequence-flag-tally.md) flag, [13](13-sequence-death-retry.md) death, [14](14-sequence-pause-resume.md) pause.
 - The flag sequence and the tally are phases of the same `step` (no separate loop).

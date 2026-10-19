@@ -33,9 +33,9 @@ sequenceDiagram
         alt brick and hero is Big
             LR->>LR: tile becomes Empty, event brick-broken
             LR->>Sess: add 50 points
-        else brick and hero is Small, or item block
+        else brick and hero is Small, item block or hidden coin block
             LR->>BB: start(col, row), offset 18 px (Small) or 4 px (Big)
-            LR->>LR: item block becomes UsedBlock, growth item: ItemPool.activate, coin: credited at the hit (see 11)
+            LR->>LR: block becomes UsedBlock, growth item: ItemPool.activate, coin (item or hidden block): credited at the hit (see 11)
         end
         BB->>EP: bump check on enemies standing on the block
         EP-->>LR: those enemies flipped and killed
@@ -64,6 +64,7 @@ sequenceDiagram
   points and the +1 life at the chain's end: **[src]** (GDD §5, §4.2, §8). Stomp definition,
   contact test every frame, index-order resolution, 30-frame flattening, 50 points per brick:
   **[gen]** (GDD §5, §6, §8); brick points are unverified (OQ3).
+- Hidden coin block (GDD §7, §10, [gen]): hit from below it behaves like a coin item block and becomes `UsedBlock`.
 - Axis-separated movement (X then resolve, Y then resolve) is why `TileCollision` is called
   twice (GDD §5); the 4 px corner tolerance [gen] lives inside `resolveY`.
 - Stomping a kicked shell stops it (GDD §6); not redrawn. A kicked shell reuses the same chain table (GDD §8, [gen]); its contacts are not redrawn.
