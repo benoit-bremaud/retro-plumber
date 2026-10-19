@@ -25,7 +25,8 @@ sequenceDiagram
     LR->>H: contact with the flag pole, grab row = feet row
     LR->>Sess: add flagBandPoints(row)
     Note over LR: scene EndSequence, input locked, timer frozen
-    LR-->>FL: events (flag)
+    LR-->>G: events (flag)
+    G-->>FL: events (flag)
     FL->>Snd: play(events)
     loop FlagSlide until the hero reaches the ground
         FL->>G: step(state, snapshot)

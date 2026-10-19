@@ -38,18 +38,18 @@ sequenceDiagram
     end
     LR-->>FL: new state
     FL->>Out: draw(state) with the pause view
-    loop while paused
+    loop each step while paused
         FL->>In: read snapshot
+        In-->>FL: InputSnapshot
         FL->>LR: step(state, snapshot)
         Note over LR: all timers frozen except pauseLockFrames, which counts down
+        opt player pressed pause again, or tapped to resume, and lock is zero
+            LR->>LR: toggle accepted, paused = false, pauseLockFrames = 43
+        end
+        LR-->>FL: new state
+        FL->>Out: draw(state)
     end
-    P->>In: pause key again, or tap to resume
-    FL->>In: read snapshot
-    In-->>FL: InputSnapshot (pause toggle bit)
-    FL->>LR: step(state, snapshot)
-    LR->>LR: toggle accepted (lock is zero), paused = false, pauseLockFrames = 43
-    LR-->>FL: new state (run continues)
-    FL->>Out: draw(state)
+    Note over FL,LR: the loop ends on the step that accepted the toggle, the run continues
 ```
 
 ## Notes
