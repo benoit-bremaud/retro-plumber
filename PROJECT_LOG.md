@@ -5,6 +5,17 @@ human context: what was done, why, and by which PR.
 
 ---
 
+## 2026-10-19
+
+### Brick 1 — complementary study (issue #3, branch `docs/study-complement`)
+
+- Structure chosen by the owner: one annex `docs/study/reference-study-complement.md` (MCDA 440, fallback six annexes 420).
+- Covers timing, camera, rendering, audio, controls, enemy/block/item/end-of-level detail. Values checked in the public disassembly (read only): 24 frames per level-timer unit, 21-frame interval timers, scroll thresholds 80 / 112 px, walker 0.5 px/frame, kicked shell 3 px/frame, hit invulnerability 148-168 frames, star 714-735 frames.
+- Five MCDA choices recorded with fallbacks (D1 frame timers 465, D2 reference camera 480, D3 own palette 455, D4 synth audio 460, D5 fixed touch pad 420).
+- Seven open questions for a GDD revision (invulnerability 2.8 s vs 2 s, shell revival, shell revival, …). Status: Accepted by the owner, PR #12 squash-merged.
+
+---
+
 ## 2026-10-16
 
 ### Brick 0 — repository skeleton (branch `docs/study`)
