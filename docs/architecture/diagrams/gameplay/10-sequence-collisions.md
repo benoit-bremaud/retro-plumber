@@ -33,12 +33,17 @@ sequenceDiagram
         alt brick and hero is Big
             LR->>LR: tile becomes Empty, event brick-broken
             LR->>Sess: add 50 points
-        else brick and hero is Small, item block or hidden coin block
+        else brick and hero is Small
+            LR->>BB: start(col, row), offset 18 px
+            Note over LR: the brick stays a Brick after the bump
+            BB->>EP: bump check on enemies standing on the block
+            EP-->>LR: those enemies flipped and killed
+        else item block or hidden coin block
             LR->>BB: start(col, row), offset 18 px (Small) or 4 px (Big)
             LR->>LR: block becomes UsedBlock, growth item: ItemPool.activate, coin (item or hidden block): credited at the hit (see 11)
+            BB->>EP: bump check on enemies standing on the block
+            EP-->>LR: those enemies flipped and killed
         end
-        BB->>EP: bump check on enemies standing on the block
-        EP-->>LR: those enemies flipped and killed
     end
     LR->>EP: stepAll(grid)
     LR->>Ct: heroVsEnemies(hero, enemies), index order
