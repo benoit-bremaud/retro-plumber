@@ -1,6 +1,6 @@
 # Reference study — complement (timing, camera, rendering, audio, controls, entities)
 
-Status: **draft v0.3** (brick 1, issue #3, 2026-10-19). Companion of
+Status: **Accepted v0.3** (owner, 2026-10-19; brick 1, issue #3). Companion of
 [`reference-study.md`](reference-study.md) (v0.2, hero physics). Input for the GDD, not a design
 contract. Owner decision 2026-10-19: one annex file (MCDA 440 / 500 vs six files 420, see §9).
 
