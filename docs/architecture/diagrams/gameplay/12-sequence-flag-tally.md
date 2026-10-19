@@ -31,11 +31,15 @@ sequenceDiagram
     FL->>Snd: play(events)
     loop FlagSlide until the hero reaches the ground
         FL->>G: step(state, snapshot)
+        G->>LR: step(run, snapshot)
         Note over LR: snapshot ignored, hero slides down the pole
+        LR-->>G: phase FlagSlide, done when on the ground
     end
     loop AutoWalk until the hero enters the goal house
         FL->>G: step(state, snapshot)
+        G->>LR: step(run, snapshot)
         Note over LR: hero jumps off to the right, walks on forced input
+        LR-->>G: phase AutoWalk, done when in the goal house
     end
     G->>G: scene Tally
     loop one timer unit per step while units remain

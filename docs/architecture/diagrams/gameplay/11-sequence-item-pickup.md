@@ -32,10 +32,12 @@ sequenceDiagram
             LR->>IP: stepAll(grid)
             Note over IP: rises 1 px every 4th frame for 16 px, about 64 frames
         end
-        FL->>LR: step(state, snapshot)
-        LR->>IP: stepAll(grid)
-        Note over IP: growth item slides right 1 px/frame, turns at walls, falls off ledges
-        LR->>Ct: heroVsItems(hero, items)
+        loop each step until the hero overlaps the growth item
+            FL->>LR: step(state, snapshot)
+            LR->>IP: stepAll(grid)
+            Note over IP: growth item slides right 1 px/frame, turns at walls, falls off ledges
+            LR->>Ct: heroVsItems(hero, items)
+        end
         Note over LR: only a growth item is ever in ItemPool
         Ct->>Sess: add 1000 points
         Ct->>H: size Small to Big

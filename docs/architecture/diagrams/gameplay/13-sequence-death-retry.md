@@ -43,7 +43,9 @@ sequenceDiagram
             end
         end
     else hit while big
-        LR->>LR: hero Small, invulnFrames = 158, run continues
+        LR->>LR: hero SmallInvulnerable, invulnFrames = 158, run continues
+        LR-->>G: new state
+        G-->>FL: new state + events (hit)
     end
 ```
 
