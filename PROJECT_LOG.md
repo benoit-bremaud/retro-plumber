@@ -78,4 +78,4 @@ human context: what was done, why, and by which PR.
   sequences + one data-flow (400 vs 340); weights validated by the owner.
 - New diagrams: 06 tick sequence, 07 name entry, 08 rebind, 09 persistence data-flow.
   Brick-3 follow-ups fixed: growth item during invulnerability (hero), pause/Esc/auto-pause triggers (flow).
-- Status: Proposed, pending review-local and owner acceptance.
+- review-local green after fixes (Must 2 + Should 12 fixed), PR #16. Owner validated the specs and matrix: status Accepted.
