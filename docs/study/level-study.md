@@ -1,6 +1,6 @@
 # Level study and vertical-slice level plan
 
-Status: **Draft v0.1** (brick 2, issue #4, epic #11). Companion of
+Status: **Accepted v0.2** (owner, 2026-10-19; brick 2, issue #4, epic #11). Companion of
 [`reference-study.md`](reference-study.md) (v0.2, hero physics) and
 [`reference-study-complement.md`](reference-study-complement.md) (v0.3, Accepted). Input for the GDD
 (§7 levels, §10 vertical slice), not a design contract; open questions go to the later GDD
