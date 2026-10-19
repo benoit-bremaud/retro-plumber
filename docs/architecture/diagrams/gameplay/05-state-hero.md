@@ -24,7 +24,7 @@ stateDiagram-v2
             [*] --> Small
             Small --> Big: growth item
             Big --> SmallInvulnerable: hit
-            SmallInvulnerable --> Small: after 2 s
+            SmallInvulnerable --> Small: after 158 frames
         }
         --
         state Motion {
@@ -45,5 +45,5 @@ stateDiagram-v2
   the pair chosen at take-off is kept until the next jump, even across a stomp bounce.
 - `Grounded` covers walk, run and skid; they are speed ranges, not separate states (GDD §4.1).
 - A hit during `SmallInvulnerable` is ignored; a growth item picked up then makes the hero `Big`
-  and ends the invulnerability *(proposed)*.
+  and ends the invulnerability.
 - Shooter size is out of the slice (GDD §4.3).
