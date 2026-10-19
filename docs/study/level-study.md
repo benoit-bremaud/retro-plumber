@@ -13,6 +13,8 @@ value, **[gen]** genre knowledge or our own proposal, not checked against a sour
 below is **entirely our own layout**: no third-party level, map, name or asset was used, and no
 level of the reference game was consulted for its layout.
 
+Jump ranges include the 4 px/frame terminal fall speed (GDD §4.2), computed in continuous time; the fixed-point update order may shift them by a few pixels (golden-trajectory test, ADR-0005).
+
 Honest limit: the reference level grammar of the earlier study (§5 there) is [gen]. This annex
 therefore takes its hard numbers from our own physics tables (derived, [int]) and treats the
 rhythm and difficulty rules as design choices justified by MCDA, not as measurements of the
@@ -30,17 +32,17 @@ landing at the same height, hitbox width ignored.
 | Camera | one-way; scroll starts when the hero is at x ≥ 80 px; the right end of the level locks the scroll | [src] complement §2 |
 | Walk speed (cap) | 1.5 px/frame (24 units) | [src] main study §2 |
 | Run speed (cap) | 2.5 px/frame (40 units); reached after ≈ 45 frames, ≈ 3.5 tiles of run-up from rest (`228/4096` px/frame²) | [src] cap; [int] run-up |
-| Jump, take-off speed 16–24 (walking): rise | v₀ = 4 px/frame, gravity held 30/256 → apex 68 px (4.3 tiles) after 34 frames; fall 96/256 → 19 frames | [int] from GDD §4.2 |
-| Jump, walking: range | 53 frames × 1.5 px/frame ≈ **80 px = 5.0 tiles** | [int] |
-| Jump, running (≥ 25): rise and range | v₀ = 5 px/frame, gravity 40/256 → apex 80 px (5 tiles); 49 frames × 2.5 ≈ **122 px = 7.6 tiles** | [int] |
-| Jump, standing (< 16 units): range | at most 0.94 px/frame × 49 frames ≈ 46 px (2.9 tiles) | [int] |
+| Jump, take-off speed 16–24 (walking): rise | v₀ = 4 px/frame, gravity held 30/256 → apex 68 px (4.3 tiles) after 34 frames; fall 96/256 reaches the 4 px/frame terminal speed (GDD §4.2) after 11 frames, then 4 px/frame → 22 frames | [int] from GDD §4.2 |
+| Jump, walking: range | 56 frames × 1.5 px/frame ≈ **85 px = 5.3 tiles** (80 px = 5.0 tiles if the terminal clamp is ignored) | [int] |
+| Jump, running (≥ 25): rise and range | v₀ = 5 px/frame, gravity 40/256 → apex 80 px (5 tiles); the fall of 80 px takes 24 frames with the clamp, 56 frames in all × 2.5 ≈ **139 px = 8.7 tiles** (122 px without the clamp) | [int] |
+| Jump, standing (< 16 units): range | at most 0.94 px/frame × 53 frames ≈ 49 px (3.1 tiles) | [int] |
 | Safe-design margin | a mandatory obstacle must need at most **75 %** of the capability of the speed it requires (pit width, wall height), so a late button press still succeeds | [gen] |
-| Resulting limits | pit crossable at walking speed ≤ 3.7 tiles (60 px); run-intended pit ≤ 5.7 tiles (92 px); wall or pipe ≤ 3 tiles (48 px, 70 % of the 68 px apex, rounded down from 51 px) | [int] from the margin |
+| Resulting limits | pit crossable at walking speed ≤ 4.0 tiles (64 px); run-intended pit ≤ 6.5 tiles (104 px); wall or pipe ≤ 3 tiles (48 px, 70 % of the 68 px apex, rounded down from 51 px) | [int] from the margin |
 | Head-bump reach | a block whose underside is 3 tiles above the standing row can be bumped by any jump (the hero needs 48 − 14 = 34 px of rise when Small, 48 − 28 = 20 px when Big) | [int] |
 | Level traversal time | start to flag ≈ 3040 px: 51 timer units at run speed, 84 at walk speed (1 unit = 24 frames); the GDD timer of 400 units is ≈ 4.7× the walking time (400 / 84.4) | [int] complement §1 |
 
 Consequences: pit widths of 2, 3 and 5 tiles; pipes of 2 and 3 tiles; the 5-tile pit is the only
-obstacle that requires a run. The wide-pit run-up needs at least 4 free tiles before the edge.
+obstacle designed for a run (a walking crossing is not excluded, see Q13). The wide-pit run-up needs at least 4 free tiles before the edge.
 
 ## 2. Tile palette (from GDD §7, glyphs are ours)
 
@@ -283,8 +285,8 @@ All enemies stand on the ground, row 10. The hero starts at column 2.
 
 | Check | Result |
 |---|---|
-| Walking-speed pits ≤ 3.7 tiles | pit 1 = 2, pit 2 = 3 ✓ |
-| Run-intended pit ≤ 5.7 tiles, above the 3.7 walking limit | pit 3 = 5 ✓; a walking jump reaches ≈ 80 px (5.0 tiles) with the hitbox ignored, so a walking crossing is possible but not safe: the run is intended, not enforced (see Q13) |
+| Walking-speed pits ≤ 4.0 tiles | pit 1 = 2, pit 2 = 3 ✓ |
+| Run-intended pit ≤ 6.5 tiles, above the 4.0 walking limit | pit 3 = 5 ✓; a walking jump reaches ≈ 85 px (5.3 tiles) with the hitbox ignored, so a walking crossing is possible but not safe: the run is intended, not enforced (see Q13) |
 | Pipes ≤ 3 tiles | 2, 3, 2, 3 ✓ |
 | Run-up before pit 3 ≥ 4 free tiles | 6 (cols 156–161) ✓ |
 | E1 first enemy ≥ 24 columns from the start (column 2) | 26 − 2 = 24 ✓ |
@@ -314,7 +316,7 @@ complement study (400 / 300 / 200 per level).
    keep it as an unlisted extra.
 4. **Q11** Level timer for the slice (links Q5): the traversal times above suggest even 200 units
    is generous.
-6. **Q13** Pit 3 (5 tiles, 80 px) is within the walking range (≈ 80 px) once the 12 px hitbox
+6. **Q13** Pit 3 (5 tiles, 80 px) is within the walking range (≈ 85 px) once the 12 px hitbox
    is counted: either accept it as "run intended", or widen it by a tile and relax the 75 %
    margin for it. A golden-trajectory test (ADR-0005) can settle it.
 7. **Q14** GDD §7 says the camera follows once the hero "passes the screen centre"; the
