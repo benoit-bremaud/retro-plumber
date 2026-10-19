@@ -37,7 +37,6 @@ sequenceDiagram
         LR->>LR: paused = true, pauseLockFrames = 43
     end
     LR-->>FL: new state
-    FL->>Out: draw(state) with the pause view
     loop each step while paused
         FL->>In: read snapshot
         In-->>FL: InputSnapshot
@@ -47,8 +46,8 @@ sequenceDiagram
             LR->>LR: toggle accepted, paused = false, pauseLockFrames = 43
         end
         LR-->>FL: new state
-        FL->>Out: draw(state)
     end
+    FL->>Out: draw(state), once per frame after the step loop (06), pause view while paused
     Note over FL,LR: the loop ends on the step that accepted the toggle, the run continues
 ```
 

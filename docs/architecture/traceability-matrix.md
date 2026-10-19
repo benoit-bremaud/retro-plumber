@@ -97,4 +97,4 @@ sensitive to the coverage weight. **Fallback:** C, drop 11 and 14 (merge pickup 
 | UML-first design value | 35 | 5 | 2 |
 | **Total / 500** | 100 | **450** | 275 |
 
-Sensitivity: A stays first with readability 50 / traceability 25. **Fallback:** B.
+Sensitivity: with readability 50 / traceability 25 / design value 25 (sum 100), A 400 and B 350: A holds. **Fallback:** B.
