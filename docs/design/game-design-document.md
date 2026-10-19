@@ -1,7 +1,7 @@
 # retro-plumber — Game Design Document
 
-**Version:** 1.0 — 2026-10-19 (brick 3, issue #5). **Status:** v1.0 for owner validation; no item is
-left *(proposed)*.
+**Version:** 1.0 — 2026-10-19 (brick 3, issue #5). **Status:** v1.0 for owner validation; no GDD item is
+left *(proposed)* (ADR acceptance is tracked separately in `docs/decisions/`).
 
 Tag legend, on every figure: **[src]** read in a public source (cited by the studies), **[int]** our
 derivation from a sourced value, **[gen]** genre knowledge or our own design choice, not checked
@@ -63,7 +63,7 @@ uses only Grubbit and Dentshell (§10). Other roles of the study (§4 there) are
   `y = 32 + 16 r`, so ground rows 11–12 are at y 208–239. [gen] — fixes the coordinates used by §8.
 - Integer-scaled to the window, letterboxed (viewport module from retro-shmup, ADR-0003). [gen]
 - HUD: score, coins, level, timer. [gen]
-- Sprites: Small hero 16 × 16, Big hero 16 × 32, enemies 16 × 16, shell 16 × 16. [gen] (§13, A)
+- Sprites: Small hero 16 × 16, Big hero 16 × 32, enemies 16 × 16, shell 16 × 16. [gen] (§13, Q3)
 
 ## 4. Hero movement
 
@@ -152,7 +152,7 @@ Small → Big (growth item) → (shooter item: later levels). [src]
 | Shell (kicked) | 3 px/frame [src] | slides, turns at walls, kills enemies in its path, hurts the hero | stops the shell | — |
 
 - **Shell revival** [int] (§13, Q2): a still shell revives as a Dentshell after **280 frames**
-  (≈ 4.7 s, midpoint of the reference's 231–336 frames); during the last 60 frames it wobbles.
+  (≈ 4.7 s, a round value inside the reference's 231–336 frames [src]); during the last 60 frames it wobbles [gen].
   A kicked shell does not revive while it moves.
 - Enemies are activated when their spawn column enters the screen + 1 column, removed when they
   leave 2 columns behind the camera. [gen]
@@ -172,7 +172,7 @@ Small → Big (growth item) → (shooter item: later levels). [src]
 - **Level format** [gen] (§13, L): a text grid, one character per tile (glyphs in the level study),
   plus an entity list (spawn column, row, type), plus a header with the level timer (§8). Levels
   are data under `src/domain/level/`, never code.
-- Level **1** of the vertical slice is **our own layout** (§10, level study §4), 200 columns long.
+- Level **1** of the vertical slice is **our own layout** (§10, level study §4), 200 columns long [gen].
 - Layout rules E1–E7 (level study §3.3) are checkable predicates; a layout test (brick 9) enforces
   them for every level.
 
@@ -191,7 +191,7 @@ decision and the open verification item).
 | Shell chain kills | same chain [gen] |
 | Time bonus at the flag | 50 per remaining timer unit [gen] |
 
-Flag pole [src for the five bands, [int] for the mapping] (§13, Q8): the grab row is the tile row
+Flag pole (five bands [src]; mapping to our rows [int]) (§13, Q8): the grab row is the tile row
 of the hero's feet when he touches the pole (rows 2–9 in the slice):
 
 | Pole rows | Points |
@@ -202,8 +202,9 @@ of the hero's feet when he touches the pole (rows 2–9 in the slice):
 | 7–8 | 400 |
 | 9 | 100 |
 
-The 5000 band must be reachable by a full jump from the top step of the final staircase and 100
-only from the ground: a golden-trajectory test checks both (ADR-0005).
+The 5000 band must be reachable from the top step of the final staircase, and the 100 band is the
+lowest grab (row 9, e.g. a low jump onto the pole base side): a golden-trajectory test checks both
+(ADR-0005).
 
 Lives and timer:
 
@@ -290,7 +291,7 @@ weights, then option totals; the winner is the solution, the runner-up is the re
 
 | ID | Choice | Criteria (weight) | Totals | Fallback |
 |---|---|---|---|---|
-| N | Cast names | IP safety 40, memorability 20, EN/FR readability 20, rename cost 20 | **B rename the three: 440**, C rename only Clank: 360, A keep v0.1 names: 300 | C (360) |
+| N | Cast names | IP safety 40, memorability 20, EN/FR readability 20, rename cost 20 | **B rename the three: 440**, C rename only the shelled walker: 360, A keep v0.1 names: 300 | C (360) |
 | H | Hitboxes | feel fidelity 30, fairness 25, level compatibility 20, simplicity 10, stomp/bump consistency 15 | **A 12×14 / 12×28: 430**, B 10 wide: 390, C 14×16 / 14×30: 360 | B (390) |
 | Q1 | Hit invulnerability | fidelity 40, fairness 25, simplicity 15, photosensitivity exposure 20 | **A 158 frames: 460**, C 150 frames: 435, B 120 frames: 330 | C (435) |
 | Q2 | Still shell | fidelity 30, fairness 25, simplicity 20, test cost 10, state risk 15 | **A revive at 280 frames + wobble: 410**, C two reference durations: 365, B stays still: 360 | C (365) |
@@ -329,7 +330,7 @@ The rest of the scoring (chain, five flag bands) is [src].
 | Version | Date | Change |
 |---|---|---|
 | 0.1 | 2026-10-16 | Brick 0 draft: vision, IP boundary, cast, movement tables, collision, enemies, scoring, flow, slice, bugs removed. |
-| 1.0 | 2026-10-19 | Every *(proposed)* item settled (§13). Cast renamed (N). Hitboxes, enemy hitboxes, sprite sizes. Hit invulnerability 158 frames (Q1). Shell revival (Q2). Timer in the level header, 400 for the slice (Q5/Q11). Contact test every frame (Q6). Pause and auto-pause (Q7). Flag bands by tile rows (Q8). §10 counts reworded (Q9, Q10). Pit 3 kept (Q13). Camera trigger aligned to 80/112 px (Q14). Animation cadence (Q3). Lives (V), level format (L), scoring (S). Screen rows fixed (§3.1). End-of-level sequence added to §9. Tags [src]/[int]/[gen] on every figure. |
+| 1.0 | 2026-10-19 | Every *(proposed)* GDD item settled (§13). Cast renamed (N). Hitboxes, enemy hitboxes, sprite sizes. Hit invulnerability 158 frames (Q1). Shell revival (Q2). Timer in the level header, 400 for the slice (Q5/Q11). Contact test every frame (Q6). Pause and auto-pause (Q7). Flag bands by tile rows (Q8). §10 counts reworded (Q9, Q10). Pit 3 kept (Q13). Camera trigger aligned to 80/112 px (Q14). Animation cadence (Q3). Lives (V), level format (L), scoring (S). Screen rows fixed (§3.1). End-of-level sequence added to §9. Tags [src]/[int]/[gen] on every figure. |
 
 ## Decision record
 
