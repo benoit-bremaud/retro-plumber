@@ -44,12 +44,13 @@ sequenceDiagram
     LR->>Ct: heroVsEnemies(hero, enemies), index order
     alt hero falling and feet above the enemy centre (stomp)
         Ct->>EP: Grubbit flattened (30 frames) or Dentshell becomes a still shell
-        Ct->>Sess: add chainPoints(stompChain)
-        Ct->>H: stompChain + 1
-        Note over Ct: hero vy set to -4 px/frame, gravity pair unchanged
-        opt chain reaches its end
-            Ct->>Sess: lives + 1
+        alt stompChain is within the ten-step table
+            Ct->>Sess: add chainPoints(stompChain)
+            Ct->>H: stompChain + 1
+        else the table is exhausted
+            Ct->>Sess: lives + 1 (no points)
         end
+        Note over Ct: hero vy set to -4 px/frame, gravity pair unchanged
     else touched from the side or below
         Ct-->>LR: hero hit (see diagrams 13 and 05)
     end
