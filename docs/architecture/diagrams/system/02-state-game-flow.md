@@ -15,8 +15,8 @@ stateDiagram-v2
     [*] --> Title
     Title --> LevelIntro: start
     LevelIntro --> Playing: after 120 frames
-    Playing --> Paused: pause
-    Paused --> Playing: resume
+    Playing --> Paused: pause key, Esc menu, focus lost or page hidden
+    Paused --> Playing: pause key, resume, tap to resume
     Playing --> Dying: pit, enemy hit when small, timer 0
     Dying --> LevelIntro: lives left
     Dying --> GameOver: no life left

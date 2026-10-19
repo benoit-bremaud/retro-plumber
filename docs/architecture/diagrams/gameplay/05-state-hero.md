@@ -25,6 +25,7 @@ stateDiagram-v2
             Small --> Big: growth item
             Big --> SmallInvulnerable: hit
             SmallInvulnerable --> Small: after 158 frames
+            SmallInvulnerable --> Big: growth item (ends invulnerability)
         }
         --
         state Motion {

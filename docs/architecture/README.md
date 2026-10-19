@@ -10,9 +10,15 @@ decisions; these diagrams are the visual index.
 | [system/03-component](diagrams/system/03-component.md) | How do the Clean layers and ports depend on each other? |
 | [gameplay/04-class-domain](diagrams/gameplay/04-class-domain.md) | Which domain types make a level run? |
 | [gameplay/05-state-hero](diagrams/gameplay/05-state-hero.md) | Which states does the hero go through? |
+| [gameplay/06-sequence-tick](diagrams/gameplay/06-sequence-tick.md) | How does one fixed step run (UC1, UC2)? |
+| [meta/07-sequence-name-entry](diagrams/meta/07-sequence-name-entry.md) | How is a name saved (UC3)? |
+| [meta/08-sequence-rebind](diagrams/meta/08-sequence-rebind.md) | How is a control rebound (UC5)? |
+| [meta/09-data-flow-persistence](diagrams/meta/09-data-flow-persistence.md) | What is stored, where? |
 
-Not drawn yet (question not open in brick 0): sequence of the fixed-step tick (copied from
-retro-shmup when code starts), data flow (no personal data beyond a local name entry), render
-and audio diagrams.
+Use-case specifications: [use-case-specifications.md](use-case-specifications.md). Traceability:
+[traceability-matrix.md](traceability-matrix.md).
+
+Not drawn yet: render and audio diagrams; meta class and options-screen state (gaps G1, G3 of the
+traceability matrix).
 
 QA evidence (screenshots) goes under [`qa/`](qa/) once there is something to run.
