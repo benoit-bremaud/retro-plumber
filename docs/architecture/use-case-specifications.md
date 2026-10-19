@@ -59,7 +59,7 @@ network, no account (GDD §12); every player-facing string comes from the EN/FR 
   2. Player triggers pause again (or taps to resume on touch); the system resumes the simulation.
 - **Extensions:**
   - 1a. Auto-pause (focus lost, page hidden) → same state; resume is manual, never automatic [gen].
-  - 1b. Esc → the pause view also offers the menu (UC5, UC6 reachable from it, see OQ2).
+  - 1b. Esc → opens the menu (GDD §9); whether it offers UC5/UC6 is undecided (OQ2).
   - 2a. Re-trigger inside the 43-frame lock [src] → ignored; the lock keeps counting during pause.
 - **Special requirements:** pause is an input event recorded in the replay; all timers stop except the pause lock (GDD §8, §9).
 

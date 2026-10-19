@@ -32,6 +32,7 @@ sequenceDiagram
     else free or confirmed swap
         Scene->>Bind: assign(action, code)
         Bind-->>Scene: updated bindings
+        Scene-->>FL: updated bindings + write request
         FL->>Store: write(bindings)
         alt storage unavailable
             Store-->>FL: failure, applies for this session only
