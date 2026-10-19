@@ -1,6 +1,6 @@
 # Traceability matrix — retro-plumber
 
-**Version:** 0.1 — 2026-10-19 (brick 4, issue #6). **Status:** Accepted (owner, 2026-10-19).
+**Version:** 0.2 — 2026-10-19 (brick 5, issue #7, adds sequences 10–14; v0.1 from brick 4, issue #6 was accepted). **Status:** Proposed (owner validation pending).
 
 UC ↔ GDD ↔ sequence ↔ component ↔ class ↔ state ↔ data-flow. Use cases:
 [`use-case-specifications.md`](use-case-specifications.md). Diagram numbers refer to the files in
@@ -9,8 +9,8 @@ in the notes (never silently empty).
 
 | UC | GDD | Sequence | Component | Class | State | Data-flow |
 |---|---|---|---|---|---|---|
-| UC1 Play a level | §4–§10 | 06 tick | 03 (FrameLoop, Game, Physics, Level, Entities, all ports) | 04 (Session, LevelRun, Hero, pools) | 02 flow, 05 hero | — (no persisted data) |
-| UC2 Pause / resume | §8, §9 | 06 (pause branch) | 03 (InputPort, FrameLoop) | 04 (LevelRun) | 02 (Playing ⇄ Paused) | — |
+| UC1 Play a level | §4–§10 | 06 tick, 10 collisions, 11 item pickup, 12 flag and tally, 13 death and retry | 03 (FrameLoop, Game, Physics, Level, Entities, all ports) | 04 (Session, LevelRun, Hero, pools) | 02 flow, 05 hero | — (no persisted data) |
+| UC2 Pause / resume | §8, §9 | 06 (pause branch), 14 pause and resume | 03 (InputPort, FrameLoop) | 04 (LevelRun) | 02 (Playing ⇄ Paused) | — |
 | UC3 Name entry | §9 | 07 | 03 (Store, StoragePort; `save` not drawn) | G1 | 02 (NameEntry) | 09 |
 | UC4 Hall of fame | §9 | G2 | 03 (as UC3) | G1 | 02 (HallOfFame) | 09 |
 | UC5 Rebind controls | §9 | 08 | 03 (Keys, StoragePort; `bindings` not drawn) | G1 | G3 | 09 |
@@ -33,6 +33,11 @@ in the notes (never silently empty).
 | 04 class | UC1, UC2 |
 | 05 hero | UC1 |
 | 06 tick | UC1, UC2 |
+| 10 collisions | UC1 |
+| 11 item pickup | UC1 |
+| 12 flag and tally | UC1 |
+| 13 death and retry | UC1, UC3, UC4 (hand-off) |
+| 14 pause and resume | UC2 |
 | 07 name entry | UC3, UC4 |
 | 08 rebind | UC5 |
 | 09 persistence | UC3–UC6 |
@@ -67,3 +72,29 @@ mechanical split into six files.
 
 Sensitivity: Completeness 45 / YAGNI 10 → A 400, B 385 (A holds). **Fallback:** B, adds the two
 trivial sequences (UC4, UC6).
+
+**D3 — sequences for the critical flows** (brick 5, issue #7; B chosen). Weights to be validated by
+the owner; figures are estimates [gen].
+
+| Criterion | Weight | A one per bullet (6) | B 5 diagrams, stomp + block hit grouped | C 3 diagrams, pause stays in 06 |
+|---|---|---|---|---|
+| Issue coverage | 30 | 5 | 5 | 3 |
+| Cross-component value | 25 | 3 | 4 | 3 |
+| KISS / YAGNI | 20 | 2 | 4 | 5 |
+| Review size | 15 | 2 | 3 | 5 |
+| Drift risk with 06 | 10 | 3 | 4 | 5 |
+| **Total / 500** | 100 | 325 | **415** | 390 |
+
+Sensitivity: KISS 35 / coverage 15 flips the order (B 400, C 420, A 280): the result is
+sensitive to the coverage weight. **Fallback:** C, drop 11 and 14 (merge pickup into 10, pause stays in 06).
+
+**D4 — participant granularity** (A chosen).
+
+| Criterion | Weight | A domain modules of 04 | B one "Game" box |
+|---|---|---|---|
+| Traceability to 03 and 04 | 40 | 5 | 2 |
+| Readability | 25 | 3 | 5 |
+| UML-first design value | 35 | 5 | 2 |
+| **Total / 500** | 100 | **450** | 275 |
+
+Sensitivity: A stays first with readability 50 / traceability 25. **Fallback:** B.

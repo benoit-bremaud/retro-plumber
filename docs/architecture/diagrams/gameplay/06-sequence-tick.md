@@ -43,4 +43,5 @@ sequenceDiagram
 - Auto-pause (focus lost, page hidden) is detected by the input adapter and delivered as a pause
   bit in the snapshot, so it is replayed like any input (GDD §9).
 - The pause toggle is just a pause bit in the snapshot; the `alt` shows what `step` does with it.
+- Zoom-ins: [10](10-sequence-collisions.md) collisions, [11](11-sequence-item-pickup.md) items, [12](12-sequence-flag-tally.md) flag, [13](13-sequence-death-retry.md) death, [14](14-sequence-pause-resume.md) pause.
 - The flag sequence and the tally are phases of the same `step` (no separate loop).
