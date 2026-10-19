@@ -37,18 +37,20 @@ sequenceDiagram
         LR->>LR: paused = true, pauseLockFrames = 43
     end
     LR-->>FL: new state
-    loop each step while paused
-        FL->>In: read snapshot
-        In-->>FL: InputSnapshot
-        FL->>LR: step(state, snapshot)
-        Note over LR: all timers frozen except pauseLockFrames, which counts down
-        opt player pressed pause again, or tapped to resume, and lock is zero
-            LR->>LR: toggle accepted, paused = false, pauseLockFrames = 43
+    loop each browser frame while paused
+        loop each accumulated fixed step
+            FL->>In: read snapshot
+            In-->>FL: InputSnapshot
+            FL->>LR: step(state, snapshot)
+            Note over LR: all timers frozen except pauseLockFrames, which counts down
+            opt player pressed pause again, or tapped to resume, and lock is zero
+                LR->>LR: toggle accepted, paused = false, pauseLockFrames = 43
+            end
+            LR-->>FL: new state
         end
-        LR-->>FL: new state
+        FL->>Out: draw(state), once per frame after the step loop (06), pause view while paused
     end
-    FL->>Out: draw(state), once per frame after the step loop (06), pause view while paused
-    Note over FL,LR: the loop ends on the step that accepted the toggle, the run continues
+    Note over FL,LR: the outer loop ends on the frame whose step accepted the toggle, the run continues
 ```
 
 ## Notes
