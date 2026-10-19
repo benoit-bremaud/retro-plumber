@@ -213,7 +213,7 @@ Lives and timer:
   24 frames [src] (complement §1); the warning jingle plays at 100 units and the music tempo
   rises [src]; 0 → death [src]. Later levels may use 300 or 200 (Q5, Q11, §13).
 - All timers (invulnerability, shell revival, level timer, pause lock) are counted in **frames** at
-  60 Hz (complement D1). Pausing stops all timers. [src]
+  60 Hz (complement D1). Pausing stops all timers except the 43-frame pause lock, which keeps counting while paused so the toggle can resume. [src]/[gen]
 - Growth item: emerges from its block (1 px every 4th frame for 16 px, ≈ 64 frames) then slides
   right at 1 px/frame, turns at walls, falls off ledges. [src]
 
@@ -231,11 +231,12 @@ slice. Formalised as state diagrams in `docs/architecture/diagrams/system/` and
 Pause [gen] (§13, Q7): Enter, P or the gamepad Start button toggle pause; Esc opens the menu. The
 game **auto-pauses** when the page loses focus or becomes hidden. Pause is an input event: it is
 recorded in the replay script and the simulation does not advance while paused. A 43-frame lock
-prevents re-trigger [src].
+prevents re-trigger [src]; it keeps counting during pause (§8). On touch, a pause button sits at the top
+of the screen, and an auto-pause shows a "tap to resume" overlay [gen].
 
 Controls [gen] (complement §5): keyboard arrows or A/D move, Space or W jump, Shift or X run;
 gamepad D-pad or left stick (dead zone 0.4), bottom button jump, left button run. Left + right
-together are ignored. Touch (D5, fixed pad): landscape; left pad (left, right, down) bottom-left,
+together are ignored. Touch (D5, fixed pad, plus a pause button): landscape; left pad (left, right, down) bottom-left,
 jump and run bottom-right; targets ≥ 48 px; multi-touch. Rebinding for keyboard and gamepad.
 
 Meta features reused from retro-shmup (copy or shared package decided at the first code brick,

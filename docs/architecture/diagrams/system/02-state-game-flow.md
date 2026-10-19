@@ -20,7 +20,8 @@ stateDiagram-v2
     Playing --> Dying: pit, enemy hit when small, timer 0
     Dying --> LevelIntro: lives left
     Dying --> GameOver: no life left
-    Playing --> Tally: flag touched
+    Playing --> EndSequence: flag touched
+    EndSequence --> Tally: hero enters the goal house
     Tally --> LevelIntro: next level exists
     Tally --> Title: last level of the slice
     GameOver --> NameEntry: top 10 score
@@ -30,6 +31,8 @@ stateDiagram-v2
 ```
 
 ## Notes
+
+- `EndSequence` runs the hero states FlagSlide then AutoWalk (see `../gameplay/05-state-hero.md`) with input locked; the timer is frozen until the tally.
 
 - One scene active at a time; each scene is a domain object driven by `step(state, input)`
   (ADR-0005), rendered through `RenderPort`.
