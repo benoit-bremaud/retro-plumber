@@ -7,6 +7,14 @@ human context: what was done, why, and by which PR.
 
 ## 2026-10-19
 
+### Brick 3 — GDD v1.0 (issue #5, PR #14, 83428ee)
+
+- GDD v0.1 → v1.0: no *(proposed)* GDD item left; every figure tagged [src]/[int]/[gen]; change log; 14 MCDA matrices in §13 resolving Q1–Q14 (Q4 withdrawn, Q12 never existed, Q14 closed by complement D2).
+- Cast renamed for IP safety (name clash search): Mudlet → Grubbit, Clank → Dentshell, Snapvine → Gulpvine (440 vs 360); rename also applied to the level study ids' text.
+- Key values: hit invulnerability 158 frames (460), shell revival 280 frames (410), slice timer 400 in the level header (395, narrow), contact test every frame (445), auto-pause (430), flag bands by tile rows (440), hitboxes 12×14 / 12×28 (430).
+- Codex review: pause lock keeps counting while paused, touch pause button + resume overlay, `EndSequence` state before `Tally` in the flow diagram; answered inline, threads left open (owner rule).
+- Open: scoring values (coin, brick, growth item, time bonus) tagged [gen], to verify against the disassembly at the first code brick. No CI, SonarQube or branch protection yet.
+
 ### Brick 2 — level study and slice plan (issue #4, branch `docs/level-study`)
 
 - Structure chosen by the owner: one annex `docs/study/level-study.md` (MCDA 445, fallback two files 395).
