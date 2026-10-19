@@ -20,7 +20,9 @@ sequenceDiagram
     participant Sess as Session
     participant Snd as AudioPort
     Note over LR: block hit decided it (diagram 10), a block coin is credited at the hit, same score rule
-    LR->>IP: activate(kind, col, row)
+    opt the bumped block holds the growth item
+        LR->>IP: activate(GrowthItem, col, row)
+    end
     loop each following step while emerging (growth item)
         FL->>LR: step(state, snapshot)
         LR->>IP: stepAll(grid)

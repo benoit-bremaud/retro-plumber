@@ -35,7 +35,7 @@ sequenceDiagram
             LR->>Sess: add 50 points
         else brick and hero is Small, or item block
             LR->>BB: start(col, row), offset 18 px (Small) or 4 px (Big)
-            LR->>LR: item block becomes UsedBlock, ItemPool.activate (see 11)
+            LR->>LR: item block becomes UsedBlock, growth item: ItemPool.activate, coin: credited at the hit (see 11)
         end
         BB->>EP: bump check on enemies standing on the block
         EP-->>LR: those enemies flipped and killed

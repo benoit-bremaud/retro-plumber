@@ -44,6 +44,8 @@ sequenceDiagram
         Note over LR: all timers frozen except pauseLockFrames, which counts down
     end
     P->>In: pause key again, or tap to resume
+    FL->>In: read snapshot
+    In-->>FL: InputSnapshot (pause toggle bit)
     FL->>LR: step(state, snapshot)
     LR->>LR: toggle accepted (lock is zero), paused = false, pauseLockFrames = 43
     LR-->>FL: new state (run continues)
