@@ -7,6 +7,14 @@ human context: what was done, why, and by which PR.
 
 ## 2026-10-19
 
+### Brick 2 — level study and slice plan (issue #4, branch `docs/level-study`)
+
+- Structure chosen by the owner: one annex `docs/study/level-study.md` (MCDA 445, fallback two files 395).
+- Original 200 × 13 tile-grid layout in six sections (intensity 1, 2, 3, 3, 5, 1) matching the GDD §10 quotas; enemy placement rules E1–E7 written as checkable predicates; jump limits derived from the GDD tables including the 4 px/frame terminal speed (walk ≈ 85 px, run ≈ 139 px).
+- MCDA D2 length 450, D3 sawtooth curve 465, D4 rule-based placement 450, D5 one hidden block + optional route 430, each with a fallback.
+- Open for the GDD revision: Q8 flag bands mapping, Q9 brick-row and staircase interpretation, Q10 hidden block count, Q11 level time, Q13 pit 3 run-intended vs enforced, Q14 camera trigger wording. Status: Accepted by the owner, PR #13 squash-merged; Codex review: two P2 comments fixed.
+
+
 ### Brick 1 — complementary study (issue #3, branch `docs/study-complement`)
 
 - Structure chosen by the owner: one annex `docs/study/reference-study-complement.md` (MCDA 440, fallback six annexes 420).
