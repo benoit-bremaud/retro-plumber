@@ -59,7 +59,7 @@ obstacle designed for a run (a walking crossing is not excluded, see Q13). The w
 | `F` | flag pole | grab bands from top to bottom (five bands, GDD §8) | [gen]; five bands [src] complement §6 |
 | `Z` | goal house | the hero walks into it after the pole | [gen]; tile list from GDD §7 |
 
-Entities (hero start, Mudlet `m`, Clank `c`) are not in the grid. They are a separate list
+Entities (hero start, Grubbit `m`, Dentshell `c`) are not in the grid. They are a separate list
 (column, row, type), as GDD §7 specifies for the level format.
 
 ## 3. Level grammar
@@ -257,17 +257,17 @@ All enemies stand on the ground, row 10. The hero starts at column 2.
 
 | Id | Role | Column | Section | Note |
 |---|---|---|---|---|
-| m1 | Mudlet | 26 | S1 | first enemy, alone (E1, E4) |
-| m2, m3 | Mudlet | 48, 50 | S2 | pair beside R2 (E5) |
-| m4 | Mudlet | 60 | S2 | 5 free columns before pit 1 (E2) |
-| m5 | Mudlet | 83 | S3 | 4 columns after pit 2's landing (E2) |
-| c1 | Clank | 92 | S3 | first shelled walker, alone, 9 columns clear (E4) |
-| m6, m7 | Mudlet | 106, 108 | S3 | pair |
-| m8, m9 | Mudlet | 116, 120 | S4 | after a 4-column breather |
-| c2 | Clank | 126 | S4 | 8 columns before the staircase (E3) |
-| m10, m11 | Mudlet | 146, 148 | S4 | pair after the staircase |
-| m12 | Mudlet | 175 | S5 | between R5 and R6 |
-| c3 | Clank | 178 | S5 | under R6 |
+| m1 | Grubbit | 26 | S1 | first enemy, alone (E1, E4) |
+| m2, m3 | Grubbit | 48, 50 | S2 | pair beside R2 (E5) |
+| m4 | Grubbit | 60 | S2 | 5 free columns before pit 1 (E2) |
+| m5 | Grubbit | 83 | S3 | 4 columns after pit 2's landing (E2) |
+| c1 | Dentshell | 92 | S3 | first shelled walker, alone, 9 columns clear (E4) |
+| m6, m7 | Grubbit | 106, 108 | S3 | pair |
+| m8, m9 | Grubbit | 116, 120 | S4 | after a 4-column breather |
+| c2 | Dentshell | 126 | S4 | 8 columns before the staircase (E3) |
+| m10, m11 | Grubbit | 146, 148 | S4 | pair after the staircase |
+| m12 | Grubbit | 175 | S5 | between R5 and R6 |
+| c3 | Dentshell | 178 | S5 | under R6 |
 
 ### 4.3 Quota and rule check (GDD §10)
 
@@ -278,8 +278,8 @@ All enemies stand on the ground, row 10. The hero starts at column 2.
 | Item blocks | 8 (6 coin, 2 growth) | 8 (6 coin, 2 growth) | coin: 12, 21, 85, 137, 171, 178; growth: 19, 87 |
 | Pipes | 4 | 4 | P1–P4 |
 | Staircases | 2 | 2 | ST1 (pyramid), ST2 (final) |
-| Mudlets | 12 | 12 | m1–m12 |
-| Clanks | 3 | 3 | c1–c3 |
+| Grubbits | 12 | 12 | m1–m12 |
+| Dentshells | 3 | 3 | c1–c3 |
 | Flag pole, goal house | 1 each | 1 each | cols 192 and 196–198 |
 | Hidden coin block | not in §10 | 1 | extra (D5), not counted in the 8 |
 

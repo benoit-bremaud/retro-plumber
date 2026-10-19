@@ -14,7 +14,7 @@ The scenes of a session, from the title to the hall of fame. The hero's own stat
 stateDiagram-v2
     [*] --> Title
     Title --> LevelIntro: start
-    LevelIntro --> Playing: after 2 s
+    LevelIntro --> Playing: after 120 frames
     Playing --> Paused: pause
     Paused --> Playing: resume
     Playing --> Dying: pit, enemy hit when small, timer 0
