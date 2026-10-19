@@ -23,14 +23,14 @@ speeds in 1/16 px/frame as in the main study (`0xF8` = −8 = −0.5 px/frame).
 | Time-low warning | when the timer reads 100: warning jingle, then the level music continues at a faster tempo (note-length table offset +8) | [src] *(disasm, `RunGameTimer`, `MusicHandler`)* |
 | Timer reaches 0 | death, as if hit while small | [src] *(disasm, `TimeUpOn`)* |
 | Pause | start button; a 43-frame lock (`0x2B`) prevents re-trigger; pausing also stops all timers | [src] *(disasm, `PauseRoutine`)* |
-| Hit invulnerability | `InjuryTimer` = 8 interval units = **168 frames** (2.8 s) | [src]+[int] |
-| Star invulnerability | `StarInvincibleTimer` = `0x23` = 35 interval units = **735 frames** (12.25 s); palette cycles every 2nd frame, then every 8th when 8 units remain or fewer | [src]+[int] |
+| Hit invulnerability | `InjuryTimer` = 8 interval units = **148 to 168 frames** (2.5 to 2.8 s; the first unit is shortened by the phase of the shared 21-frame counter) | [src]+[int] |
+| Star invulnerability | `StarInvincibleTimer` = `0x23` = 35 interval units = **714 to 735 frames** (about 11.9 to 12.25 s, same phase effect); palette cycles every 2nd frame, then every 8th when 8 units remain or fewer | [src]+[int] |
 | Player–enemy contact test | run **every other frame** (frame-counter bit 0) | [src] *(disasm, `PlayerEnemyCollision`)* |
 
 Consequences:
 
 - GDD §8 timer (24 frames per unit, 400 units) is **confirmed**.
-- GDD §4.3 hit invulnerability of **2 s is proposed, the reference gives 2.8 s** → open question Q1.
+- GDD §4.3 hit invulnerability of **2 s is proposed, the reference gives about 2.5 to 2.8 s** → open question Q1.
 - The every-other-frame contact test is a hardware-era shortcut, not a feel rule → drop it (Q6).
 
 **Choice D1 — timer representation.** A: every timer in frames at 60 Hz (reference intervals × 21);
@@ -39,15 +39,15 @@ B: two tiers like the reference (frame + 21-frame interval); C: wall-clock milli
 | Criterion | W | A Frames | B Two tiers | C Milliseconds |
 |---|---|---|---|---|
 | Determinism / replay | 30 | 5 — integers only | 5 | 1 — depends on the clock |
-| Fidelity to reference durations | 25 | 5 — 21 × n exact | 5 | 3 — rounding |
+| Fidelity to reference durations | 25 | 4 — 21 × n, within one 21-frame phase | 5 — exact, phase included | 3 — rounding |
 | Simplicity (KISS) | 20 | 5 — one unit | 3 — two counters | 3 |
 | Testability (scripted runs) | 15 | 5 | 4 | 1 |
 | Pause-safe / accessibility | 10 | 4 | 4 | 3 |
-| **Total / 500** | 100 | **490** | 435 | 210 |
+| **Total / 500** | 100 | **465** | 435 | 210 |
 
-Points: A = 150+125+100+75+40; B = 150+125+60+60+40; C = 30+75+60+15+30. Sensitivity: with KISS
-at 0, A 390 vs B 375, still A. **Fallback:** B (435), drop-in (same durations, extra counter).
-Decision: all timers in frames (reference intervals converted ×21).
+Points: A = 150+100+100+75+40; B = 150+125+60+60+40; C = 30+75+60+15+30. Sensitivity: with KISS
+at 0, A 365 vs B 375, so B wins; A leads only while KISS weighs more than about 15. **Fallback:** B (435), drop-in (same durations, extra counter).
+Decision: all timers in frames (reference intervals converted ×21, the phase jitter of 0 to 20 frames is not reproduced).
 
 ## 2. Camera and scrolling
 
@@ -55,7 +55,7 @@ Decision: all timers in frames (reference intervals converted ×21).
 |---|---|---|
 | Direction | horizontal only; never scrolls back left; player is clamped at the left edge of the screen | [src] *(disasm, `ScrollHandler`, `ChkPOffscr`)* |
 | Scroll trigger | hero's on-screen x ≥ 80 px (`0x50`) | [src] *(disasm)* |
-| Scroll amount | hero's frame displacement, **minus 1 px** while the hero is between 80 and 112 px (`0x70`); the full displacement from 112 px on | [src] *(disasm)* |
+| Scroll amount | hero's frame displacement; between 80 and 112 px (`0x70`) a displacement of 2 px or more is reduced by 1 px, a displacement of exactly 1 px is kept; the full displacement from 112 px on | [src] *(disasm)* |
 | Scroll lock | a flag stops scrolling at the level end, and while a boss or an end-of-level object is on screen | [src] *(disasm, `ScrollLock`)* |
 | Scroll stops after side collision | not while the side-collision timer is running | [src] *(disasm)* |
 | Platform riding | a moving platform's displacement is added to the scroll force | [src] *(disasm, `Platform_X_Scroll`)* |
@@ -76,7 +76,7 @@ B: smoothed follow camera; C: reference rules plus a dead-zone smoothing of the 
 
 Points: A = 175+100+100+75+30; B = 70+60+40+45+40; C = 140+80+60+75+40. **Fallback:** C (395), a
 drop-in change confined to the scroll module. Decision: reference rules; the "−1 px between 80 and
-112" quirk is a feel rule, kept.
+112 for displacements of 2 px or more" quirk is a feel rule, kept.
 
 ## 3. Rendering
 
@@ -137,7 +137,7 @@ noise, sequencer on the 60 Hz tick; B: pre-rendered audio files; C: A plus sampl
 | **Total / 500** | 100 | **460** | 260 | 375 |
 
 Points: A = 125+100+100+75+30+30; B = 100+40+20+30+40+30; C = 125+80+60+60+30+20. Sensitivity:
-reuse weight to 0 and size to 25 → A 360 vs C 335 (A still first). **Fallback:** C (375), additive
+reuse weight to 0 and size to 25 → A 410 vs C 355 (A still first). **Fallback:** C (375), additive
 (the voice engine stays, samples are an extra layer behind `AudioPort`). Decision: synth voices.
 The DMC channel is not modelled (YAGNI, no effect needs it).
 
@@ -181,25 +181,25 @@ the table says "proposed change".
 | Kicked shell speed | ±48 = 3 px/frame | [src] *(disasm, `KickedShellXSpdData`)* | GDD §6 confirmed |
 | Demoted shelled walker | ±8 = 0.5 px/frame | [src] *(disasm, the demoted-walker speed table)* | note |
 | Stunned shell revival | revive timers 16 and 11 interval units | [src] *(disasm, `RevivalRateData`)* | open: GDD has no revival (Q2) |
-| Stomp bounce | vertical speed −3 | [src] *(disasm, `EnemyStomped`)* | GDD §4.2 says −4 → Q4 |
+| Stomp bounce | vertical speed −4 for walkers and shelled walkers (shared `SBnce` routine); −3 only for a small group of classes (fish, projectiles, thrower classes) | [src] *(disasm, `EnemyStomped`, `SBnce`)* | GDD §4.2 (−4) confirmed |
 | Death hop | vertical speed −4 | [src] *(disasm, `KillPlayer`)* | matches study §3 |
 | Power-up emerging | rises 1 px every 4th frame until 16 px (≈ 64 frames), then moves at 16 = 1 px/frame | [src] *(disasm, `GrowThePowerUp`)* | GDD §8 confirmed |
 | Star item | bounces with a jump routine (a jumping enemy's), moves like the growth item | [src] *(disasm, `PowerUpObjHandler`)* | later bricks |
 | Floating score | a number rises for a fixed frame count (to measure) | [int] | Q3 |
-| Flag pole | five height bands, thresholds on y = 24, 34, 80, 104, 144 px; scores 5000 / 2000 / 800 / 400 / 100 from the top | [src] thresholds *(disasm, `FlagpoleYPosData`)*; [int] scores | GDD §8 confirmed (five bands) |
+| Flag pole | five height bands; the loop never compares the first table entry (24), so the effective cutoffs are y = 34, 80, 104, 144 px and everything above 34 gets the top band; scores 5000 / 2000 / 800 / 400 / 100 from the top | [src] thresholds *(disasm, `FlagpoleYPosData`)*; [int] scores | GDD §8 confirmed (five bands) |
 | End-of-level sequence | hero slides down the pole, jumps off to the right, walks right automatically (forced input), enters the building drawn behind it (priority bit), then the time-to-points tally runs, then the next level loads | [src] *(disasm, `FlagpoleRoutine`, `PlayerEndLevel`, `StarFlagTaskControl`)* | add to GDD §9 flow |
-| Bonus rule | a hidden extra-life block appears at the end of a level if enough coins were collected (per-world minimum) | [src] *(disasm, `Hidden1UpCoinAmts`)* | not in the slice; later bricks |
+| Bonus rule | coins collected in the third level of a world are compared with a per-world minimum; if enough, a hidden extra-life block is enabled in the **first level of the next world** (also enabled when starting a game) | [src] *(disasm, `Hidden1UpCoinAmts`)* | not in the slice; later bricks |
 | Brick bump | a bumped block moves up 4 px then down (state machine with two block objects for brick chunks) | [src] *(disasm, `BlockObjectsCore`)* | brick-chunk effect is ours |
-| Block hit position | the hit is resolved by hero's head against two y offsets (4 and 18 px) | [src] *(disasm, `BlockYPosAdderData`)* | collision brick (#5) |
+| Block bump placement | once a head hit is detected, the bumped block object's start y is offset by 4 px (big hero) or 18 px (small hero), chosen by hero size; not two collision probes | [src] *(disasm, `PlayerHeadCollision`, `BlockYPosAdderData`)* | collision brick (#5) |
 | Hard-mode flag | a second difficulty set (faster walkers) selected by game progress | [src] *(disasm, `PrimaryHardMode`)* | not in 1.0 (YAGNI) |
 
 ## 7. Open questions for the GDD (to settle with the owner, GDD revision PR)
 
-1. **Q1** Hit invulnerability: 2.8 s as in the reference, or the GDD's 2 s?
+1. **Q1** Hit invulnerability: about 2.5 to 2.8 s as in the reference, or the GDD's 2 s?
 2. **Q2** Do stunned shells revive (reference: yes, after about 3.9 to 5.6 s) or stay still (GDD §6)?
 3. **Q3** Measure animation cadence, floating score duration and sprite sizes (a short follow-up
    pass, needs a frame-by-frame video reference; physics-like values are done).
-4. **Q4** Stomp bounce: −3 as in the reference or −4 as in the GDD?
+4. **Q4** *(withdrawn: the reference stomp bounce of walkers is −4, same as the GDD; the −3 group is out of the slice)*.
 5. **Q5** Level-time length per level (400 / 300 / 200) as in the reference?
 6. **Q6** Contact test every frame (recommended) instead of every other frame.
 7. **Q7** Pause key set and pause behaviour on tab blur (auto-pause), proposed yes.
