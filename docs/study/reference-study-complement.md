@@ -179,7 +179,7 @@ the table says "proposed change".
 |---|---|---|---|
 | Walker speed | −8 = 0.5 px/frame (hard mode −12 = 0.75) | [src] *(disasm, `NormalXSpdData`)* | GDD §6 confirmed |
 | Kicked shell speed | ±48 = 3 px/frame | [src] *(disasm, `KickedShellXSpdData`)* | GDD §6 confirmed |
-| Demoted shelled walker | ±8 = 0.5 px/frame | [src] *(disasm, `DemotedKoopaXSpdData`)* | note |
+| Demoted shelled walker | ±8 = 0.5 px/frame | [src] *(disasm, the demoted-walker speed table)* | note |
 | Stunned shell revival | revive timers 16 and 11 interval units | [src] *(disasm, `RevivalRateData`)* | open: GDD has no revival (Q2) |
 | Stomp bounce | vertical speed −3 | [src] *(disasm, `EnemyStomped`)* | GDD §4.2 says −4 → Q4 |
 | Death hop | vertical speed −4 | [src] *(disasm, `KillPlayer`)* | matches study §3 |

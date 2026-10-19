@@ -48,3 +48,29 @@
 - Design: dependency rule consistent across CLAUDE.md, ADR-0006 and the component diagram · Docs:
   units and decisions now consistent · Tests: n/a · Security: no secrets · Correctness: physics
   values re-checked against the public disassembly.
+
+---
+
+# Local review — brick 1 (branch docs/study-complement vs main)
+
+- Date: 2026-10-19
+- Scope: `docs/study/reference-study-complement.md` (new), `PROJECT_LOG.md`; documentation only.
+- Checks run: IP-name grep, figure cross-check against the disassembly, secrets. Design, tests,
+  security-code and correctness agents: not applicable, no code or diagrams in this brick.
+- Verdict: fix Must first — resolved · Must 1 (resolved) · Should 0 · Nice 1
+
+| Step | Result |
+|---|---|
+| 1 Tests | N/A — docs-only |
+| 2 Coverage | N/A — docs-only |
+| 3 SonarQube | N/A — nothing to scan |
+| 4 Secrets | gitleaks clean (main..HEAD) · no tracked .env · diff read: nothing sensitive |
+| 5 QA pass | Docs-only: no running product exists |
+
+## 🔴 Must Have (resolved)
+- `docs/study/reference-study-complement.md:182` `[docs]` · a third-party enemy name inside a
+  routine label breached the IP rule · label replaced by a generic description.
+
+## 🔵 Nice to Have
+- Animation cadence, floating-score duration and sprite sizes remain unmeasured (open question Q3);
+  to be filed as an issue if the owner wants a video-reference pass.
