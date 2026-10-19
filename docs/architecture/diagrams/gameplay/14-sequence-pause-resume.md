@@ -24,14 +24,16 @@ sequenceDiagram
         In->>In: pause bit set in the next snapshot
     else focus lost or page hidden
         Br->>In: blur or visibilitychange
-        In->>In: pause bit set in the next snapshot
+        In->>In: auto-pause bit set in the next snapshot
     end
     FL->>In: read snapshot
-    In-->>FL: InputSnapshot (pause bit)
+    In-->>FL: InputSnapshot (pause toggle bit, auto-pause bit)
     FL->>LR: step(state, snapshot)
-    alt pauseLockFrames > 0
-        LR->>LR: pause bit ignored
-    else lock is zero and playing
+    alt auto-pause bit and playing
+        LR->>LR: paused = true, pauseLockFrames = 43 (lock bypassed)
+    else toggle bit and pauseLockFrames > 0
+        LR->>LR: toggle ignored
+    else toggle bit, lock is zero and playing
         LR->>LR: paused = true, pauseLockFrames = 43
     end
     LR-->>FL: new state
@@ -43,7 +45,7 @@ sequenceDiagram
     end
     P->>In: pause key again, or tap to resume
     FL->>LR: step(state, snapshot)
-    LR->>LR: lock is zero, paused = false
+    LR->>LR: toggle accepted (lock is zero), paused = false, pauseLockFrames = 43
     LR-->>FL: new state (run continues)
     FL->>Out: draw(state)
 ```
@@ -54,7 +56,8 @@ sequenceDiagram
   resume" overlay, manual resume only: **[gen]** (GDD §9, Q7).
 - The adapter only turns a browser event into a bit of the snapshot; deciding what the bit means
   (toggle, ignore) is a domain rule. This keeps replays exact (ADR-0005).
+- The snapshot carries two bits: the toggle (keys, Start, touch button) and an auto-pause bit that can only pause. So a blur while paused never resumes, and a blur inside the lock still pauses (the lock guards manual toggles only) **[gen]**. Re-arming the lock on resume mirrors the pause **[gen]**.
 - An auto-pause while already paused changes nothing; resuming is never automatic (UC2 1a).
-- A trigger inside the lock is ignored (UC2 2a); because the lock keeps counting during pause,
-  the first resume press after a pause is accepted once it reaches zero.
+- A manual toggle inside the lock is ignored (UC2 2a); because the lock keeps counting during pause,
+  the first resume press after a pause is accepted once it reaches zero (a press in the first 43 frames is ignored).
 - Esc opens the menu rather than pausing; where options are reached is OQ2 and is not drawn.

@@ -6,7 +6,7 @@
 ## Context
 
 How a death leads either to a fresh attempt with the session kept, or to the end of the game and
-the name entry of [07](07-sequence-name-entry.md).
+the name entry of [07](../meta/07-sequence-name-entry.md).
 
 ## Diagram
 
@@ -50,7 +50,7 @@ sequenceDiagram
 ## Notes
 
 - Tags. Death causes and the −4 px/frame hop: **[src]** (GDD §4.3). 158 frames of
-  invulnerability: **[int]** (Q1). 3 lives and no continue: **[gen]** (GDD §8, V). Level intro of
+  invulnerability: **[int]** (GDD §13, Q1). 3 lives and no continue: **[gen]** (GDD §13, decision V). Level intro of
   120 frames: **[gen]** (GDD §9).
 - Retry builds a new `LevelRun` from the immutable `LevelData` (04), so the tile changes of the
   previous attempt (broken bricks, used blocks) are gone; the `Session` object survives.

@@ -11,8 +11,8 @@ in the notes (never silently empty).
 |---|---|---|---|---|---|---|
 | UC1 Play a level | §4–§10 | 06 tick, 10 collisions, 11 item pickup, 12 flag and tally, 13 death and retry | 03 (FrameLoop, Game, Physics, Level, Entities, all ports) | 04 (Session, LevelRun, Hero, pools) | 02 flow, 05 hero | — (no persisted data) |
 | UC2 Pause / resume | §8, §9 | 06 (pause branch), 14 pause and resume | 03 (InputPort, FrameLoop) | 04 (LevelRun) | 02 (Playing ⇄ Paused) | — |
-| UC3 Name entry | §9 | 07 | 03 (Store, StoragePort; `save` not drawn) | G1 | 02 (NameEntry) | 09 |
-| UC4 Hall of fame | §9 | G2 | 03 (as UC3) | G1 | 02 (HallOfFame) | 09 |
+| UC3 Name entry | §9 | 07 (13 hand-off) | 03 (Store, StoragePort; `save` not drawn) | G1 | 02 (NameEntry) | 09 |
+| UC4 Hall of fame | §9 | G2 (13 hand-off) | 03 (as UC3) | G1 | 02 (HallOfFame) | 09 |
 | UC5 Rebind controls | §9 | 08 | 03 (Keys, StoragePort; `bindings` not drawn) | G1 | G3 | 09 |
 | UC6 Language / comfort | §9, §12 | G2 | 03 (`i18n`, `save` not drawn) | G1 | G3 | 09 |
 
@@ -33,14 +33,14 @@ in the notes (never silently empty).
 | 04 class | UC1, UC2 |
 | 05 hero | UC1 |
 | 06 tick | UC1, UC2 |
+| 07 name entry | UC3, UC4 |
+| 08 rebind | UC5 |
+| 09 persistence | UC3–UC6 |
 | 10 collisions | UC1 |
 | 11 item pickup | UC1 |
 | 12 flag and tally | UC1 |
 | 13 death and retry | UC1, UC3, UC4 (hand-off) |
 | 14 pause and resume | UC2 |
-| 07 name entry | UC3, UC4 |
-| 08 rebind | UC5 |
-| 09 persistence | UC3–UC6 |
 
 ## Decision record (MCDA)
 
@@ -88,7 +88,7 @@ the owner; figures are estimates [gen].
 Sensitivity: KISS 35 / coverage 15 flips the order (B 400, C 420, A 280): the result is
 sensitive to the coverage weight. **Fallback:** C, drop 11 and 14 (merge pickup into 10, pause stays in 06).
 
-**D4 — participant granularity** (A chosen).
+**D4 — participant granularity** (A chosen; brick 5, issue #7; weights to be validated by the owner, figures are estimates [gen]).
 
 | Criterion | Weight | A domain modules of 04 | B one "Game" box |
 |---|---|---|---|

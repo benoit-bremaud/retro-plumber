@@ -19,7 +19,7 @@ sequenceDiagram
     participant H as Hero
     participant Sess as Session
     participant Snd as AudioPort
-    Note over LR: block hit decided it (diagram 10)
+    Note over LR: block hit decided it (diagram 10), a block coin is credited at the hit, same score rule
     LR->>IP: activate(kind, col, row)
     loop each following step while emerging (growth item)
         FL->>LR: step(state, snapshot)
@@ -30,7 +30,7 @@ sequenceDiagram
     LR->>IP: stepAll(grid)
     Note over IP: growth item slides right 1 px/frame, turns at walls, falls off ledges
     LR->>Ct: heroVsItems(hero, items)
-    alt item is a coin
+    alt item is a coin placed in the level
         Ct->>Sess: add 200 points, coins + 1
         opt coins reach 100
             Ct->>Sess: lives + 1, coins reset to 0
@@ -52,7 +52,7 @@ sequenceDiagram
 - Tags. Emergence timing (1 px every 4th frame for 16 px) and the +1 life at 100 coins:
   **[src]** (GDD §8). Coin 200 and growth item 1000 points: **[gen]**, unverified (OQ3). Growth
   item ending invulnerability: **[gen]** (GDD §4.3).
-- A coin from a block pops without a ground phase; the loop above concerns the growth item only.
+- A coin from a block is scored at the hit and never enters `heroVsItems`; the coin branch above is for coins placed in the level. The emergence loop concerns the growth item only.
 - An already Big hero collecting a growth item gets the points and no size change (GDD §4.3: the
   next size is the shooter item, out of the slice).
 - Items are `ItemKind` entries (04): a new item is a new row of the behaviour table, not a new

@@ -20,6 +20,7 @@ sequenceDiagram
     participant BB as BlockBump
     participant EP as EnemyPool
     participant Ct as Contacts
+    participant H as Hero
     participant Sess as Session
     participant Snd as AudioPort
     FL->>LR: step(state, snapshot)
@@ -43,13 +44,14 @@ sequenceDiagram
     LR->>Ct: heroVsEnemies(hero, enemies), index order
     alt hero falling and feet above the enemy centre (stomp)
         Ct->>EP: Grubbit flattened (30 frames) or Dentshell becomes a still shell
-        Ct->>Sess: add chainPoints(stompChain), stompChain + 1
+        Ct->>Sess: add chainPoints(stompChain)
+        Ct->>H: stompChain + 1
         Note over Ct: hero vy set to -4 px/frame, gravity pair unchanged
         opt chain reaches its end
             Ct->>Sess: lives + 1
         end
     else touched from the side or below
-        Ct-->>LR: hero hit (see 13 and 05)
+        Ct-->>LR: hero hit (see diagrams 13 and 05)
     end
     LR-->>FL: new state + events (stomp, brick-broken, bump...)
     FL->>Snd: play(events)
@@ -60,10 +62,10 @@ sequenceDiagram
 - Tags. Head bump speed +1 px/frame, bump offsets 4 / 18 px, stomp bounce −4 px/frame, chain
   points and the +1 life at the chain's end: **[src]** (GDD §5, §4.2, §8). Stomp definition,
   contact test every frame, index-order resolution, 30-frame flattening, 50 points per brick:
-  **[gen]** (GDD §5, §6, §8). Chain values are [src], brick points [gen] (OQ3).
+  **[gen]** (GDD §5, §6, §8); brick points are unverified (OQ3).
 - Axis-separated movement (X then resolve, Y then resolve) is why `TileCollision` is called
   twice (GDD §5); the 4 px corner tolerance [gen] lives inside `resolveY`.
-- A kicked shell reuses the same chain table (GDD §8, [gen]); its contacts are not redrawn.
+- Stomping a kicked shell stops it (GDD §6); not redrawn. A kicked shell reuses the same chain table (GDD §8, [gen]); its contacts are not redrawn.
 - `stompChain` lives on the hero and resets on landing (04). Pools are preallocated: `activate`
   and the flattening reuse slots, nothing is allocated in the step.
 - The domain never calls `AudioPort`: events are returned and forwarded by the app (ADR-0006).

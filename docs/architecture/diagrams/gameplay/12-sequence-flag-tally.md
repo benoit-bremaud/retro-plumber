@@ -5,7 +5,7 @@
 
 ## Context
 
-The last phase of a level: from the contact with the flag pole to the return to the title. It is
+The last phase of a level: from the contact with the flag pole to the return to the title (last level of the slice; otherwise the next level intro). It is
 a sequence of `LevelRun` phases driven by successive `step` calls, with input ignored (GDD §9).
 The scenes are those of [02](../system/02-state-game-flow.md), the hero states those of
 [05](05-state-hero.md).
@@ -45,7 +45,7 @@ sequenceDiagram
 
 ## Notes
 
-- Tags. Five flag bands: **[src]**; their mapping to our tile rows 2–9: **[int]** (GDD §8, Q8);
+- Tags. Five flag bands: **[src]**; their mapping to our tile rows 2–9: **[int]** (GDD §8, §13 Q8);
   50 points per remaining timer unit: **[gen]**, unverified (OQ3); the hero's jump-off and walk
   to the goal house: **[src]** (GDD §9).
 - Input lock and frozen timer are rules of the `EndSequence` scene, not of the adapter: the
