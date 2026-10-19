@@ -1,6 +1,6 @@
 # Use-case specifications — retro-plumber
 
-**Version:** 0.1 — 2026-10-19 (brick 4, issue #6). **Status:** Proposed (owner validation pending).
+**Version:** 0.1 — 2026-10-19 (brick 4, issue #6). **Status:** Accepted (owner, 2026-10-19).
 
 Cockburn-style (*Writing Effective Use Cases*, fully dressed) specifications of the six use cases
 of [`diagrams/system/01-use-case.md`](diagrams/system/01-use-case.md). Every use case is an

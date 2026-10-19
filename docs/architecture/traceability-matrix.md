@@ -1,6 +1,6 @@
 # Traceability matrix — retro-plumber
 
-**Version:** 0.1 — 2026-10-19 (brick 4, issue #6). **Status:** Proposed (owner validation pending).
+**Version:** 0.1 — 2026-10-19 (brick 4, issue #6). **Status:** Accepted (owner, 2026-10-19).
 
 UC ↔ GDD ↔ sequence ↔ component ↔ class ↔ state ↔ data-flow. Use cases:
 [`use-case-specifications.md`](use-case-specifications.md). Diagram numbers refer to the files in
