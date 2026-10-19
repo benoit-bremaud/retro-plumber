@@ -79,3 +79,4 @@ human context: what was done, why, and by which PR.
 - New diagrams: 06 tick sequence, 07 name entry, 08 rebind, 09 persistence data-flow.
   Brick-3 follow-ups fixed: growth item during invulnerability (hero), pause/Esc/auto-pause triggers (flow).
 - review-local green after fixes (Must 2 + Should 12 fixed), PR #16. Owner validated the specs and matrix: status Accepted.
+- Merged: PR #16 squash-merged (bc12106), branch deleted. Owner accepted the use-case specifications and the traceability matrix. Local review: Must 2 and Should 12 found and fixed (domain must not call ports; app performs I/O). Codex: 2 inline findings answered. No CI, SonarQube or branch protection yet. Open: OQ1–OQ3 (GDD revision), gaps G1/G3. Next: brick 5, issue #7 (sequence diagrams).
