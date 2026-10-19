@@ -19,6 +19,8 @@ classDiagram
     }
     class LevelRun {
         +timerFrames int
+        +paused bool
+        +pauseLockFrames int
         +step(inputSnapshot) void
     }
     class LevelData {
@@ -111,7 +113,7 @@ classDiagram
     class ScoreTables {
         <<constants>>
         +chainPoints(index) int
-        +flagBandPoints(heightPx) int
+        +flagBandPoints(row) int
     }
     Session o-- LevelRun
     LevelRun *-- TileGrid

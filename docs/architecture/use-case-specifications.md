@@ -6,8 +6,8 @@ Cockburn-style (*Writing Effective Use Cases*, fully dressed) specifications of 
 of [`diagrams/system/01-use-case.md`](diagrams/system/01-use-case.md). Every use case is an
 **actor-initiated goal**. Rules and numbers come from the [GDD](../design/game-design-document.md)
 v1.0 and keep its tags: **[src]** public source, **[int]** our derivation, **[gen]** genre
-knowledge or our own choice, not checked against a source. Scoring values stay **[gen]**
-(GDD §8, unverified). Traceability to the other diagrams: [`traceability-matrix.md`](traceability-matrix.md).
+knowledge or our own choice, not checked against a source. Coin, brick, growth-item and time-bonus values stay **[gen]**
+(GDD §8, unverified); the stomp chain and flag bands are [src]. Traceability to the other diagrams: [`traceability-matrix.md`](traceability-matrix.md).
 
 Common to all use cases: primary actor **Player**; scope **retro-plumber (browser game)**; no
 network, no account (GDD §12); every player-facing string comes from the EN/FR catalogue.
@@ -18,7 +18,8 @@ network, no account (GDD §12); every player-facing string comes from the EN/FR 
 |---|---|
 | UC2 «extend» UC1 | Pause may interrupt UC1 at any point of the *Playing* scene (extension point `playing`). |
 | UC3 «extend» UC1 | Name entry is added at the game-over point when the score is in the top 10 (extension point `game-over`). |
-| UC3 «include» UC4 | After the name is saved, the hall of fame is shown (UC4 main scenario from step 2). |
+| UC3 «include» UC4 | After the name is saved, the hall of fame is shown (the whole of UC4, from step 1). |
+| UC1 → UC4 | When the game-over score does not qualify, UC1 ends directly in UC4 (GDD §9). |
 | UC5, UC6 | Independent goals, reached from the options screen. |
 
 ## UC1 — Play a level to the flag
@@ -29,7 +30,7 @@ network, no account (GDD §12); every player-facing string comes from the EN/FR 
 - **Success guarantee:** the flag is reached, the tally is added to the score, the game returns to the title (slice: one level, GDD §10).
 - **Main scenario:**
   1. Player starts the game; the system shows the level intro (name, lives) for 120 frames [gen].
-  2. The system starts the run: timer at 400 units [src], 1 unit = 24 frames [src].
+  2. The system starts the run: timer at 400 units [gen] (chosen, GDD Q5/Q11), 1 unit = 24 frames [src].
   3. Player moves, runs and jumps (momentum, variable jump height [src]); the system applies the movement tables (GDD §4) every 1/60 s.
   4. Player stomps enemies, breaks bricks, bumps item blocks, collects coins and the growth item; the system scores each event (GDD §8) and grows the hero.
   5. Player touches the flag pole; the system locks input, scores the grab band [src/int], slides the hero down, walks him into the goal house.
@@ -37,19 +38,19 @@ network, no account (GDD §12); every player-facing string comes from the EN/FR 
   7. The system returns to the title.
 - **Extensions:**
   - 3a. Player pauses → UC2.
+  - 3b. Timer reaches 100 units → warning jingle, faster music [src].
   - 4a. Hero hit while big → small, 158 frames of invulnerability [int]; the run continues.
   - 4b. Hero hit while small, falls into a pit, or timer reaches 0 → death hop (−4 px/frame [src]); lives −1.
-    - 4b1. Lives left → back to step 1 with a fresh run, score/coins/lives kept (GDD §9).
+    - 4b1. Lives left → back to step 1 with a fresh run, score/coins/lives kept (class diagram 04) [gen].
     - 4b2. No life left → game over; if the score is in the top 10 → UC3, otherwise → UC4.
   - 4c. Growth item collected during invulnerability → hero becomes big, invulnerability ends [gen].
   - 4d. 100 coins collected → +1 life, counter reset [src]; stomp chain reaching its end → +1 life [src].
-  - 3b. Timer reaches 100 units → warning jingle, faster music [src].
 - **Special requirements:** deterministic replay of the input script (ADR-0005); no allocation in the loop; game-feel effects (blink, shake) toggleable (GDD §12).
 - **Open point:** a golden-trajectory test measures the real margin of pit 3 (GDD §10).
 
 ## UC2 — Pause and resume a run
 
-- **Level:** subfunction of UC1 (user goal). **Trigger:** the player presses Enter, P or Start, or Esc; or the page loses focus / becomes hidden (auto-pause).
+- **Level:** user goal (optional behaviour inserted into UC1). **Trigger:** the player presses Enter, P or Start; or the page loses focus / becomes hidden (auto-pause).
 - **Preconditions:** a level is in the *Playing* scene.
 - **Minimal guarantee:** the simulation state is unchanged by the pause.
 - **Success guarantee:** the run continues exactly where it stopped.
@@ -127,4 +128,4 @@ network, no account (GDD §12); every player-facing string comes from the EN/FR 
 |---|---|---|
 | OQ1 | Direct access to the hall of fame from the title? | UC4 trigger |
 | OQ2 | Where is the options screen reached (title menu, Esc menu, both)? | UC2, UC5, UC6 triggers; game-flow diagram has no options scene |
-| OQ3 | Scoring values of GDD §8 are [gen], unverified | UC1 step 4 and 6 numbers |
+| OQ3 | Coin, brick, growth-item and time-bonus values of GDD §8 are [gen], unverified | UC1 step 6 numbers |

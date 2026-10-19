@@ -33,7 +33,7 @@ stateDiagram-v2
 ## Notes
 
 - `EndSequence` runs the hero states FlagSlide then AutoWalk (see `../gameplay/05-state-hero.md`) with input locked; the timer is frozen until the tally.
-
 - One scene active at a time; each scene is a domain object driven by `step(state, input)`
   (ADR-0005), rendered through `RenderPort`.
 - The slice has one level, so `Tally` always goes back to `Title` until more levels exist.
+- No options or menu scene is drawn yet: where it is reached is open question OQ2 in the use-case specifications.

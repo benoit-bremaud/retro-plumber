@@ -6,7 +6,7 @@
 ## Context
 
 How the frame loop drives one 60 Hz simulation step while a level is played, including the pause
-branch. The domain never reads input or the clock itself.
+branch. The domain never reads input or the clock itself, which keeps the replay deterministic (ADR-0005).
 
 ## Diagram
 
@@ -18,7 +18,8 @@ sequenceDiagram
     participant Game as Game / LevelRun (domain)
     participant Out as RenderPort
     participant Snd as AudioPort
-    Clock->>FL: elapsed time
+    FL->>Clock: now()
+    Clock-->>FL: elapsed time
     loop while accumulator >= 1/60 s
         FL->>In: read snapshot
         In-->>FL: InputSnapshot (pause bit included)
@@ -31,13 +32,15 @@ sequenceDiagram
         end
         FL->>Snd: play(events)
     end
-    FL->>Out: draw(state, alpha)
+    FL->>Out: draw(state)
 ```
 
 ## Notes
 
-- Fixed timestep with an accumulator [gen] (CLAUDE.md); events are plain data returned by `step`,
+- Fixed timestep with an accumulator (ADR-0005, CLAUDE.md); `FrameLoop` pulls the time from the
+  `Clock` interface it owns, so no adapter calls the app; events are plain data returned by `step`,
   the app forwards them to `AudioPort` (the domain never calls the adapter).
 - Auto-pause (focus lost, page hidden) is detected by the input adapter and delivered as a pause
   bit in the snapshot, so it is replayed like any input (GDD §9).
+- The pause toggle is just a pause bit in the snapshot; the `alt` shows what `step` does with it.
 - The flag sequence and the tally are phases of the same `step` (no separate loop).
