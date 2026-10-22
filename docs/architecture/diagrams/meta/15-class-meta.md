@@ -27,7 +27,7 @@ classDiagram
         Dying(LevelRun)
         EndSequence(LevelRun)
         Tally(LevelRun)
-        GameOver
+        GameOver(delayFrames)
         NameEntry(letters, cursor)
         HallOfFame
         OptionsScreen(action, phase)
