@@ -19,4 +19,4 @@
 - `15-class-meta.md` `[design]` · field names are indicative · settle at the first code brick (noted in the file).
 
 ## Per-dimension summary
-- Design: Contacts and ItemPool now match 10/11; meta types match 07/08/14 and the "domain never calls a port" rule (write requests in `StepResult`). Docs: figures tagged [gen]. Tests, security: not applicable.
+- Design: Contacts and ItemPool now match 10/11; meta types match 07/08/14 and the "domain never calls a port" rule (write requests in `StepOutput`). Docs: figures tagged [gen]. Tests, security: not applicable.

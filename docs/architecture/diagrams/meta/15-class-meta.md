@@ -16,12 +16,13 @@ classDiagram
     class Game {
         +scene Scene
         +session Session
-        +step(state, snapshot) StepResult
+        +persisted Persisted
+        +step(snapshot, out) void
     }
     class Scene {
         <<union>>
         Title
-        LevelIntro
+        LevelIntro(LevelRun)
         Playing(LevelRun)
         Dying(LevelRun)
         EndSequence(LevelRun)
@@ -37,17 +38,22 @@ classDiagram
         +autoPause bool
         +rawCode int
     }
-    class StepResult {
-        <<immutable>>
-        +state Game
+    class StepOutput {
+        <<preallocated>>
         +events Event[]
         +writes WriteRequest[]
+        +clear() void
     }
     class WriteRequest {
         <<union>>
         HallOfFameWrite
         BindingsWrite
         OptionsWrite
+    }
+    class Persisted {
+        +hallOfFame HallOfFame
+        +bindings Bindings
+        +options Options
     }
     class Save {
         <<module>>
@@ -77,8 +83,9 @@ classDiagram
     Game *-- Scene
     Game o-- Session
     Game ..> InputSnapshot
-    Game ..> StepResult
-    StepResult *-- WriteRequest
+    Game ..> StepOutput
+    StepOutput *-- WriteRequest
+    Game o-- Persisted
     Scene ..> Save
     Scene ..> Bindings
     Save --> HallOfFame
@@ -90,10 +97,10 @@ classDiagram
 
 ## Notes
 
-- `Persisted` is the record `{hallOfFame, bindings, options}` that the app reads through `StoragePort` at start-up and hands to `Game`; `Save.decode` validates type and range and falls back to `defaults()` [gen] ([09](09-data-flow-persistence.md)).
-- `StepResult.writes` is how the domain asks for I/O without calling a port: the app performs the write ([07](07-sequence-name-entry.md), [08](08-sequence-rebind.md)).
+- `Persisted` is the record held by `Game` (`{hallOfFame, bindings, options}`): the app reads through `StoragePort` at start-up and hands to `Game`; `Save.decode` validates type and range and falls back to `defaults()` [gen] ([09](09-data-flow-persistence.md)).
+- `Game.step` updates the state in place (ADR-0005) and fills the preallocated `StepOutput` that the app clears each step: no per-step allocation (GDD no-allocation rule). `StepOutput.writes` is how the domain asks for I/O without calling a port: the app performs the write ([07](07-sequence-name-entry.md), [08](08-sequence-rebind.md)).
 - `InputSnapshot` carries the two pause bits of [14](../gameplay/14-sequence-pause-resume.md) and the raw code used for rebinding.
-- `Playing`, `Dying`, `EndSequence` and `Tally` carry the active `LevelRun` (12 and 13 keep stepping it; the tally reads its timer).
+- `LevelIntro` holds the fresh run built on retry (13) until the 120 frames elapse; `Playing`, `Dying`, `EndSequence` and `Tally` carry the active `LevelRun` (12 and 13 keep stepping it; the tally reads its timer).
 - Pause is a flag of `LevelRun` (04), not a scene, as in [02](../system/02-state-game-flow.md).
 - The options screen is not a scene yet: where it is reached is OQ2 (GDD revision, own PR).
 - Field names are indicative until the first code brick [gen].
