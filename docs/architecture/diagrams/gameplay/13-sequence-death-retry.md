@@ -38,12 +38,16 @@ sequenceDiagram
                     Note over Sess: score, coins and lives are kept
                 else no life left
                     G->>G: scene GameOver
-                    alt score ranks 1-10 in the table held in memory
-                        G->>G: scene NameEntry (diagram 07)
-                    else otherwise
-                        G->>G: scene HallOfFame
-                    end
                 end
+            end
+            G-->>FL: new state
+        end
+        opt scene is GameOver
+            FL->>G: step(state, snapshot), GameOver is shown first
+            alt score ranks 1-10 in the table held in memory
+                G->>G: scene NameEntry (diagram 07)
+            else otherwise
+                G->>G: scene HallOfFame
             end
             G-->>FL: new state
         end
