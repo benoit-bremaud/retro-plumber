@@ -23,9 +23,9 @@ classDiagram
         Title
         LevelIntro
         Playing(LevelRun)
-        Dying
-        EndSequence
-        Tally
+        Dying(LevelRun)
+        EndSequence(LevelRun)
+        Tally(LevelRun)
         GameOver
         NameEntry
         HallOfFame
@@ -93,6 +93,7 @@ classDiagram
 - `Persisted` is the record `{hallOfFame, bindings, options}` that the app reads through `StoragePort` at start-up and hands to `Game`; `Save.decode` validates type and range and falls back to `defaults()` [gen] ([09](09-data-flow-persistence.md)).
 - `StepResult.writes` is how the domain asks for I/O without calling a port: the app performs the write ([07](07-sequence-name-entry.md), [08](08-sequence-rebind.md)).
 - `InputSnapshot` carries the two pause bits of [14](../gameplay/14-sequence-pause-resume.md) and the raw code used for rebinding.
+- `Playing`, `Dying`, `EndSequence` and `Tally` carry the active `LevelRun` (12 and 13 keep stepping it; the tally reads its timer).
 - Pause is a flag of `LevelRun` (04), not a scene, as in [02](../system/02-state-game-flow.md).
 - The options screen is not a scene yet: where it is reached is OQ2 (GDD revision, own PR).
 - Field names are indicative until the first code brick [gen].

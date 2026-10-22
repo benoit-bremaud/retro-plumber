@@ -9,8 +9,8 @@ in the notes (never silently empty).
 
 | UC | GDD | Sequence | Component | Class | State | Data-flow |
 |---|---|---|---|---|---|---|
-| UC1 Play a level | §4–§10 | 06 tick, 10 collisions, 11 item pickup, 12 flag and tally, 13 death and retry | 03 (FrameLoop, Game, Physics, Level, Entities, all ports) | 04 (Session, LevelRun, Hero, pools) | 02 flow, 05 hero | 16 (no persisted data) |
-| UC2 Pause / resume | §8, §9 | 06 (pause branch), 14 pause and resume | 03 (InputPort, FrameLoop) | 04 (LevelRun) | 02 (Playing ⇄ Paused) | 16 (no persisted data) |
+| UC1 Play a level | §4–§10 | 06 tick, 10 collisions, 11 item pickup, 12 flag and tally, 13 death and retry | 03 (FrameLoop, Game, Physics, Level, Entities, all ports) | 04 (Session, LevelRun, Hero, pools), 15 (Game, Scene) | 02 flow, 05 hero | 16 (no persisted data) |
+| UC2 Pause / resume | §8, §9 | 06 (pause branch), 14 pause and resume | 03 (InputPort, FrameLoop) | 04 (LevelRun), 15 (InputSnapshot) | 02 (Playing ⇄ Paused) | 16 (no persisted data) |
 | UC3 Name entry | §9 | 07 (13 hand-off) | 03 (Store, StoragePort, Meta) | 15 | 02 (NameEntry) | 09 |
 | UC4 Hall of fame | §9 | G2 (13 hand-off) | 03 (as UC3) | 15 | 02 (HallOfFame) | 09 |
 | UC5 Rebind controls | §9 | 08 | 03 (Keys, StoragePort; `bindings` in Meta) | 15 | G3 | 09 |
@@ -29,7 +29,7 @@ in the notes (never silently empty).
 | Diagram | Serves |
 |---|---|
 | 02 flow | UC1, UC2, UC3, UC4 |
-| 15 meta classes | UC3–UC6 |
+| 15 meta classes | UC1–UC6 |
 | 16 tick data-flow | UC1, UC2 |
 | 03 component | all |
 | 04 class | UC1, UC2 |
