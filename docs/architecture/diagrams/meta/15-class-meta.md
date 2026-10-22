@@ -33,7 +33,7 @@ classDiagram
         OptionsScreen(action, phase)
     }
     class InputSnapshot {
-        <<immutable>>
+        <<preallocated>>
         +buttons bits
         +pauseToggle bool
         +autoPause bool
@@ -58,6 +58,7 @@ classDiagram
     }
     class Save {
         <<module>>
+        +insert(hallOfFame, name, score) void
         +decode(raw) Persisted
         +defaults() Persisted
     }
@@ -65,7 +66,6 @@ classDiagram
         <<preallocated>>
         +entries Entry[10]
         +ranks(score) bool
-        +insert(name, score) void
     }
     class Bindings {
         <<preallocated>>
@@ -93,6 +93,7 @@ classDiagram
     Save --> Bindings
     Save --> Options
     Scene ..> Catalogue
+    Scene ..> Options
     Options --> Catalogue
 ```
 
@@ -102,8 +103,8 @@ classDiagram
 - Sequences [06](../gameplay/06-sequence-tick.md) to [14](../gameplay/14-sequence-pause-resume.md) write `step(state, snapshot)` and "new state" as shorthand: `state` is the `Game` the app owns, updated in place, and "new state" is that same object after the step; the contract here (`step(snapshot, out)`) is the precise form, and those diagrams are not rewritten for it.
 - `NameEntry` keeps the letters typed and the cursor (07); `OptionsScreen` keeps the selected action and its phase (waiting for capture, swap to confirm) (08).
 - `Game.step` updates the state in place (ADR-0005) and fills the preallocated `StepOutput` that the app clears each step: no per-step allocation (GDD no-allocation rule). `StepOutput.writes` is how the domain asks for I/O without calling a port: the app performs the write ([07](07-sequence-name-entry.md), [08](08-sequence-rebind.md)).
-- `InputSnapshot` carries the two pause bits of [14](../gameplay/14-sequence-pause-resume.md) and the raw code used for rebinding.
-- `HallOfFame`, `Bindings` and `Options` are fixed-size records updated in place inside `Game.step` (no allocation in the loop); `Save.decode` builds them once at start-up.
+- `InputSnapshot` is one reused buffer filled in place by the input adapter each read (no allocation); it carries the two pause bits of [14](../gameplay/14-sequence-pause-resume.md) and the raw code used for rebinding.
+- `Save.insert` mutates the owned `HallOfFame` in place (07); `HallOfFame`, `Bindings` and `Options` are fixed-size records updated in place inside `Game.step` (no allocation in the loop); `Save.decode` builds them once at start-up.
 - `LevelIntro` holds the fresh run built on retry (13) until the 120 frames elapse; `Playing`, `Dying`, `EndSequence` and `Tally` carry the active `LevelRun` (12 and 13 keep stepping it; the tally reads its timer).
 - Pause is a flag of `LevelRun` (04), not a scene, as in [02](../system/02-state-game-flow.md).
 - `OptionsScreen` is the scene of 08 (UC5, UC6); how it is reached is OQ2 (GDD revision, own PR), so no transition into it is drawn in [02](../system/02-state-game-flow.md).
