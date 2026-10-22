@@ -30,6 +30,7 @@ classDiagram
         GameOver
         NameEntry
         HallOfFame
+        OptionsScreen
     }
     class InputSnapshot {
         <<immutable>>
@@ -72,7 +73,7 @@ classDiagram
         +isReserved(code) bool
     }
     class Options {
-        <<immutable>>
+        <<preallocated>>
         +language Lang
         +comfort ComfortFlags
     }
@@ -103,5 +104,5 @@ classDiagram
 - `HallOfFame`, `Bindings` and `Options` are fixed-size records updated in place inside `Game.step` (no allocation in the loop); `Save.decode` builds them once at start-up.
 - `LevelIntro` holds the fresh run built on retry (13) until the 120 frames elapse; `Playing`, `Dying`, `EndSequence` and `Tally` carry the active `LevelRun` (12 and 13 keep stepping it; the tally reads its timer).
 - Pause is a flag of `LevelRun` (04), not a scene, as in [02](../system/02-state-game-flow.md).
-- The options screen is not a scene yet: where it is reached is OQ2 (GDD revision, own PR).
+- `OptionsScreen` is the scene of 08 (UC5, UC6); how it is reached is OQ2 (GDD revision, own PR), so no transition into it is drawn in [02](../system/02-state-game-flow.md).
 - Field names are indicative until the first code brick [gen].
