@@ -1,7 +1,7 @@
 # Local review — retro-plumber (branch `docs/uml-structure`, brick 6, issue #8)
 
 - Date: 2026-10-22
-- Scope: `main...HEAD` (docs-only: diagrams 02, 03, 04, new 15 and 16, matrix v0.3, README)
+- Scope: `main...HEAD` (docs-only: diagrams 02, 03, 04, 08, 10, 11, new 15 and 16, matrix v0.3, README)
 - Checks run: consistency review vs sequences 06–14 and GDD v1.0 · secrets · SonarQube · Mermaid render (mmdc)
 - Verdict: ship — Must 0 · Should 0 · Nice 1
 
