@@ -31,7 +31,7 @@ flowchart TB
         Entities["entities: EnemyPool, ItemPool"]
         Contacts["contacts"]
         Meta["save, bindings, i18n"]
-        Audio["audio: event to sound table"]
+        SoundTable["audio: event to sound table"]
     end
     Main --> Loop
     Main --> Canvas
@@ -54,7 +54,7 @@ flowchart TB
     Game --> Contacts
     Contacts --> Entities
     Game --> Meta
-    Game --> Audio
+    Game --> SoundTable
 ```
 
 ## Notes
