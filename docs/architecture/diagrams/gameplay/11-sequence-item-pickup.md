@@ -46,6 +46,8 @@ sequenceDiagram
                 Ct->>IP: release slot
             else item fell into a pit or left 2 columns behind the camera
                 IP->>IP: despawn, release slot, no points
+            else item still active
+                Note over IP: stays in the pool, next step
             end
             LR-->>FL: new state (item still active, picked up or despawned)
         end

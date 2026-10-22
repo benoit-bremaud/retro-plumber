@@ -38,11 +38,13 @@ sequenceDiagram
             Note over LR: the brick stays a Brick after the bump
             BB->>EP: bump check on enemies standing on the block
             EP-->>LR: those enemies flipped and killed
-        else item block or hidden coin block
+        else unused item block or hidden coin block
             LR->>BB: start(col, row), offset 18 px (Small) or 4 px (Big)
             LR->>LR: block becomes UsedBlock, growth item: ItemPool.activate, coin (item or hidden block): credited at the hit (see 11)
             BB->>EP: bump check on enemies standing on the block
             EP-->>LR: those enemies flipped and killed
+        else hard block, pipe or already UsedBlock
+            Note over LR: no reaction, tile unchanged
         end
     end
     LR->>EP: stepAll(grid)
