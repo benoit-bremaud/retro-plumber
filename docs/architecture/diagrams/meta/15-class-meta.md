@@ -28,9 +28,9 @@ classDiagram
         EndSequence(LevelRun)
         Tally(LevelRun)
         GameOver
-        NameEntry
+        NameEntry(letters, cursor)
         HallOfFame
-        OptionsScreen
+        OptionsScreen(action, phase)
     }
     class InputSnapshot {
         <<immutable>>
@@ -99,6 +99,8 @@ classDiagram
 ## Notes
 
 - `Persisted` is the record held by `Game` (`{hallOfFame, bindings, options}`): the app reads through `StoragePort` at start-up and hands to `Game`; `Save.decode` validates type and range and falls back to `defaults()` [gen] ([09](09-data-flow-persistence.md)).
+- Sequences [06](../gameplay/06-sequence-tick.md) to [14](../gameplay/14-sequence-pause-resume.md) write `step(state, snapshot)` and "new state" as shorthand: `state` is the `Game` the app owns, updated in place, and "new state" is that same object after the step; the contract here (`step(snapshot, out)`) is the precise form, and those diagrams are not rewritten for it.
+- `NameEntry` keeps the letters typed and the cursor (07); `OptionsScreen` keeps the selected action and its phase (waiting for capture, swap to confirm) (08).
 - `Game.step` updates the state in place (ADR-0005) and fills the preallocated `StepOutput` that the app clears each step: no per-step allocation (GDD no-allocation rule). `StepOutput.writes` is how the domain asks for I/O without calling a port: the app performs the write ([07](07-sequence-name-entry.md), [08](08-sequence-rebind.md)).
 - `InputSnapshot` carries the two pause bits of [14](../gameplay/14-sequence-pause-resume.md) and the raw code used for rebinding.
 - `HallOfFame`, `Bindings` and `Options` are fixed-size records updated in place inside `Game.step` (no allocation in the loop); `Save.decode` builds them once at start-up.
