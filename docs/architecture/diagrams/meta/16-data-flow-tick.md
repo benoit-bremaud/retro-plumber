@@ -21,9 +21,9 @@ flowchart LR
     S[("StoragePort adapter")]
     B -->|"keys, pad, touch, blur"| In
     In -->|"InputSnapshot"| FL
-    FL -->|"state, snapshot"| G
-    G -->|"new state, events, write requests"| FL
-    FL -->|"state"| R
+    FL -->|"snapshot, output buffer"| G
+    G -->|"fills events, write requests"| FL
+    FL -->|"game state, read only"| R
     FL -->|"events"| A
     FL -->|"write requests"| S
     S -->|"persisted record, once at start-up"| FL
@@ -31,6 +31,6 @@ flowchart LR
 
 ## Notes
 
-- The domain receives and returns plain data only; every arrow to an adapter starts in the app.
+- `Game` owns its state and updates it in place; the app hands it the snapshot and the preallocated output buffer and reads back only the filled events and write requests (ADR-0005, no allocation in the loop). The domain receives and returns plain data only; every arrow to an adapter starts in the app.
 - The persisted record enters the state once at start-up, never during the loop [gen].
 - Events are transient (not stored); only write requests reach storage.
