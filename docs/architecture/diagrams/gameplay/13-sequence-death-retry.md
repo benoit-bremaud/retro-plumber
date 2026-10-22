@@ -26,24 +26,26 @@ sequenceDiagram
         G->>G: scene Dying
         G-->>FL: events
         FL->>Snd: play(events)
-        loop until the hop ends below the screen
+        loop each step while scene Dying
             FL->>G: step(state, snapshot)
             G->>LR: step(run, snapshot)
             LR-->>G: hop in progress, or finished below the screen
-            G-->>FL: new state
-        end
-        G->>Sess: lives - 1
-        alt lives left
-            G->>LD: build a fresh LevelRun
-            G->>G: scene LevelIntro (120 frames)
-            Note over Sess: score, coins and lives are kept
-        else no life left
-            G->>G: scene GameOver
-            alt score ranks 1-10 in the table held in memory
-                G->>G: scene NameEntry (diagram 07)
-            else otherwise
-                G->>G: scene HallOfFame
+            opt hop finished
+                G->>Sess: lives - 1
+                alt lives left
+                    G->>LD: build a fresh LevelRun
+                    G->>G: scene LevelIntro (120 frames)
+                    Note over Sess: score, coins and lives are kept
+                else no life left
+                    G->>G: scene GameOver
+                    alt score ranks 1-10 in the table held in memory
+                        G->>G: scene NameEntry (diagram 07)
+                    else otherwise
+                        G->>G: scene HallOfFame
+                    end
+                end
             end
+            G-->>FL: new state
         end
     else hit while big
         LR->>LR: hero SmallInvulnerable, invulnFrames = 158, run continues
