@@ -43,13 +43,17 @@ sequenceDiagram
             G-->>FL: new state
         end
         opt scene is GameOver
-            FL->>G: step(state, snapshot), GameOver is shown first
-            alt score ranks 1-10 in the table held in memory
-                G->>G: scene NameEntry (diagram 07)
-            else otherwise
-                G->>G: scene HallOfFame
+            loop each step while GameOver is shown
+                FL->>G: step(state, snapshot)
+                opt confirm pressed or display delay elapsed
+                    alt score ranks 1-10 in the table held in memory
+                        G->>G: scene NameEntry (diagram 07)
+                    else otherwise
+                        G->>G: scene HallOfFame
+                    end
+                end
+                G-->>FL: new state
             end
-            G-->>FL: new state
         end
     else hit while big
         LR->>LR: hero SmallInvulnerable, invulnFrames = 158, run continues
@@ -67,6 +71,7 @@ sequenceDiagram
   previous attempt (broken bricks, used blocks) are gone; the `Session` object survives.
 - "Table held in memory": the app reads the hall of fame through `StoragePort` at start-up and
   hands it to the domain state **[gen]**; the domain never calls the port. The write happens in 07.
+- `GameOver` stays on screen until a confirm press or a short delay; the GDD gives neither, so both are open **[gen]** points to fix at the first code brick (GDD revision if the delay becomes a rule).
 - The timer starts again at 400 units on the fresh run (GDD §8).
 - The `Dying → GameOver` transition and the top-10 test follow 02; the exact moment the ranking
   is computed is not specified by the GDD **[gen]**.
