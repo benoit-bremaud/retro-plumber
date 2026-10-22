@@ -21,6 +21,7 @@ flowchart LR
     S[("StoragePort adapter")]
     B -->|"keys, pad, touch, blur"| In
     In -->|"InputSnapshot"| FL
+    FL -->|"bindings record, read only"| In
     FL -->|"snapshot, output buffer"| G
     G -->|"fills events, write requests"| FL
     FL -->|"game state, read only"| R
@@ -35,4 +36,5 @@ flowchart LR
 
 - `Game` owns its state and updates it in place; the app hands it the snapshot and the preallocated output buffer and reads back only the filled events and write requests (ADR-0005, no allocation in the loop). The domain receives and returns plain data only; every arrow to an adapter starts in the app.
 - The stored data enters the state once at start-up, validated by `Save.decode` or replaced by `defaults()` ([15](15-class-meta.md), [09](09-data-flow-persistence.md)), never during the loop [gen].
+- The app gives the input adapter the `Bindings` record owned by `Game` (read only), so a rebind of 08 applies from the next snapshot; the adapter maps codes to buttons and sends the raw code only during a capture.
 - Events are transient (not stored); only write requests reach storage.
