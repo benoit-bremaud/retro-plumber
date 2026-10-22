@@ -47,7 +47,9 @@ sequenceDiagram
     end
     LR->>EP: stepAll(grid)
     LR->>Ct: heroVsEnemies(hero, enemies), index order
-    alt hero falling and feet above the enemy centre (stomp)
+    alt no enemy overlaps the hero
+        Note over Ct: nothing happens
+    else hero overlaps an enemy, falling and feet above its centre (stomp)
         Ct->>EP: Grubbit flattened (30 frames) or Dentshell becomes a still shell
         alt stompChain is within the ten-step table
             Ct->>Sess: add chainPoints(stompChain)
@@ -56,7 +58,7 @@ sequenceDiagram
             Ct->>Sess: lives + 1 (no points)
         end
         Note over Ct: hero vy set to -4 px/frame, gravity pair unchanged
-    else touched from the side or below
+    else hero overlaps an enemy from the side or below
         alt hero is Big or Small (not invulnerable)
             Ct-->>LR: hero hit (see diagrams 13 and 05)
         else hero is SmallInvulnerable
