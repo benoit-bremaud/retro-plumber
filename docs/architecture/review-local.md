@@ -32,3 +32,32 @@ _None._
 
 ## Per-dimension summary
 - Design: consistent with GDD/ADRs, domain never calls a port · Docs: complete blocks, links resolve · Tests: n/a · Security: no code, gitleaks clean · Correctness: figures and tags match the GDD, MCDA arithmetic verified.
+
+---
+
+# Local review — retro-plumber (branch `chore/sonarqube`, repository conformity)
+
+- Date: 2026-10-22 · Commit: b4dd2c4 · Scope: `main...HEAD` (12 files, config and docs only, no code)
+- Verdict: ship · Must 0 · Should 1 (fixed) · Nice 1
+
+## Pre-merge gate (head SHA b4dd2c4)
+| Step | Result |
+|---|---|
+| 1 Tests | n/a, no code or suite yet (brick 0 design study) |
+| 2 Coverage | n/a, no code (tests) · no doc counter applicable |
+| 3 SonarQube | ✅ PASSED (project `retro-plumber`, 25 files, secrets and text sensors only) |
+| 4 Secrets | ✅ gitleaks clean (`main..HEAD`) · no tracked .env · diff read: nothing sensitive |
+| 5 QA pass | ✅ docs/config diff, no product to start · all 5 YAML files parse |
+- Gate: **GREEN for push**. Workflows only run after the push, so their first run is verified on the PR.
+
+## 🔴 Must Have
+_None._
+
+## 🟡 Should Have
+- `SECURITY.md:8` `[security]` · private vulnerability reporting was disabled while the policy pointed to it · **fixed 2026-10-22**: the owner enabled it in Settings → Code security (verified through the API).
+
+## 🔵 Nice to Have
+- `.github/dependabot.yml` `[correctness]` · only the `github-actions` ecosystem and CodeQL `actions` are configured · add `npm` and `javascript-typescript` with the first code brick (noted in both files).
+
+## ⚪ Disagree / Intentional
+- No `ci.yml`, ESLint, tsconfig, Husky or Makefile: they belong to the first code brick (CLAUDE.md: no implementation before retro-shmup's vertical slice).
