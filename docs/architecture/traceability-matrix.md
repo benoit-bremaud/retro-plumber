@@ -1,6 +1,6 @@
 # Traceability matrix — retro-plumber
 
-**Version:** 0.2 — 2026-10-19 (brick 5, issue #7, adds sequences 10–14; v0.1 from brick 4, issue #6 was accepted). **Status:** Proposed (owner validation pending).
+**Version:** 0.3 — 2026-10-22 (brick 6, issue #8, adds 15 and 16, fixes 02–04; v0.2 from brick 5, issue #7). **Status:** Proposed (owner validation pending).
 
 UC ↔ GDD ↔ sequence ↔ component ↔ class ↔ state ↔ data-flow. Use cases:
 [`use-case-specifications.md`](use-case-specifications.md). Diagram numbers refer to the files in
@@ -9,18 +9,18 @@ in the notes (never silently empty).
 
 | UC | GDD | Sequence | Component | Class | State | Data-flow |
 |---|---|---|---|---|---|---|
-| UC1 Play a level | §4–§10 | 06 tick, 10 collisions, 11 item pickup, 12 flag and tally, 13 death and retry | 03 (FrameLoop, Game, Physics, Level, Entities, all ports) | 04 (Session, LevelRun, Hero, pools) | 02 flow, 05 hero | — (no persisted data) |
+| UC1 Play a level | §4–§10 | 06 tick, 10 collisions, 11 item pickup, 12 flag and tally, 13 death and retry | 03 (FrameLoop, Game, Physics, Level, Entities, all ports) | 04 (Session, LevelRun, Hero, pools) | 02 flow, 05 hero | 16 (no persisted data) |
 | UC2 Pause / resume | §8, §9 | 06 (pause branch), 14 pause and resume | 03 (InputPort, FrameLoop) | 04 (LevelRun) | 02 (Playing ⇄ Paused) | — |
-| UC3 Name entry | §9 | 07 (13 hand-off) | 03 (Store, StoragePort; `save` not drawn) | G1 | 02 (NameEntry) | 09 |
+| UC3 Name entry | §9 | 07 (13 hand-off) | 03 (Store, StoragePort, Meta) | 15 | 02 (NameEntry) | 09 |
 | UC4 Hall of fame | §9 | G2 (13 hand-off) | 03 (as UC3) | G1 | 02 (HallOfFame) | 09 |
-| UC5 Rebind controls | §9 | 08 | 03 (Keys, StoragePort; `bindings` not drawn) | G1 | G3 | 09 |
-| UC6 Language / comfort | §9, §12 | G2 | 03 (`i18n`, `save` not drawn) | G1 | G3 | 09 |
+| UC5 Rebind controls | §9 | 08 | 03 (Keys, StoragePort; `bindings` in Meta) | 15 | G3 | 09 |
+| UC6 Language / comfort | §9, §12 | G2 | 03 (`i18n`, `save` in Meta) | 15 | G3 | 09 |
 
 ## Gaps (recorded, not hidden)
 
 | # | Gap | Decision |
 |---|---|---|
-| G1 | The class diagram covers gameplay only; `save`, `bindings`, `i18n`, scenes have no class. | Follow-up: meta class diagram at the first code brick; the modules appear in 03 notes. |
+| G1 | ~~The class diagram covers gameplay only.~~ | Closed in v0.3: meta class diagram 15. |
 | G2 | UC4 and UC6 have no sequence (a single read / a single write, no multi-party interaction). | Chosen scope (MCDA D2: A 400/500, fallback B 340/500 adds them). |
 | G3 | No state diagram for the options screen (OQ2 undecided). | Wait for the GDD answer to OQ2. |
 
@@ -29,6 +29,8 @@ in the notes (never silently empty).
 | Diagram | Serves |
 |---|---|
 | 02 flow | UC1, UC2, UC3, UC4 |
+| 15 meta classes | UC3–UC6 |
+| 16 tick data-flow | UC1, UC2 |
 | 03 component | all |
 | 04 class | UC1, UC2 |
 | 05 hero | UC1 |
@@ -98,3 +100,16 @@ sensitive to the coverage weight. **Fallback:** C, drop 11 and 14 (merge pickup 
 | **Total / 500** | 100 | **450** | 275 |
 
 Sensitivity: with readability 50 / traceability 25 / design value 25 (sum 100), A 400 and B 350: A holds. **Fallback:** B.
+
+**D5 — scope of the structural UML** (brick 6, issue #8; B chosen by the owner on 2026-10-22; figures are estimates [gen]).
+
+| Criterion | Weight | A fixes only | B fixes + meta class + tick data-flow | C B + render and audio diagrams |
+|---|---|---|---|---|
+| Issue coverage | 30 | 2 | 4 | 5 |
+| Consistency with sequences | 25 | 4 | 5 | 5 |
+| KISS / YAGNI | 20 | 5 | 4 | 2 |
+| Review size | 15 | 5 | 3 | 1 |
+| Open-question risk | 10 | 5 | 4 | 3 |
+| **Total / 500** | 100 | 385 | **410** | 360 |
+
+Sensitivity: KISS 35 / coverage 15 gives A 430, B 410 (fragile). **Fallback:** A.
