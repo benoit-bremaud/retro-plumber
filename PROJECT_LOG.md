@@ -80,3 +80,11 @@ human context: what was done, why, and by which PR.
   Brick-3 follow-ups fixed: growth item during invulnerability (hero), pause/Esc/auto-pause triggers (flow).
 - review-local green after fixes (Must 2 + Should 12 fixed), PR #16. Owner validated the specs and matrix: status Accepted.
 - Merged: PR #16 squash-merged (bc12106), branch deleted. Owner accepted the use-case specifications and the traceability matrix. Local review: Must 2 and Should 12 found and fixed (domain must not call ports; app performs I/O). Codex: 2 inline findings answered. No CI, SonarQube or branch protection yet. Open: OQ1–OQ3 (GDD revision), gaps G1/G3. Next: brick 5, issue #7 (sequence diagrams).
+
+## 2026-10-22 (brick 5, branch `docs/uml-sequences`, issue #7)
+
+- Sequence diagrams for the critical flows: 10 collisions (stomp, block hit), 11 item pickup, 12 flag and tally, 13 death and retry, 14 pause and resume. Traceability matrix v0.2 (UC1/UC2 cells, reverse check, hand-off of 13 to UC3/UC4).
+- MCDA D3 five diagrams (B 415 vs C 390, fragile: C leads when coverage weighs 15 and KISS 35, recorded fallback C) and D4 module-level participants (A 450 vs B 275, fallback B).
+- review-local green (docs-only): Must 0, Should 10 fixed, report `docs/architecture/review-local.md`. Codex ran 14 review rounds on the PR (about 35 inline findings, all valid P2 on call/return semantics, scene transitions and missing branches); each answered inline, threads left open. Resulting conventions: every `step` returns once to `FrameLoop`, terminal transitions happen inside the step, two-bit pause snapshot (toggle, auto-pause), `GameOver` held until confirm or delay (open [gen] point).
+- Merged: PR #18 squash-merged (5662451), branch deleted, issue #7 closed. Matrix v0.2 still marked Proposed (no explicit owner acceptance). No CI, SonarQube or branch protection yet.
+- Open: OQ1–OQ3 (GDD revision), gaps G1/G3, GameOver duration/confirm rule, class diagram 04 missing `Contacts` dependencies on `Session`/`Hero`/pools, diagram 02 lists Esc as a pause trigger (OQ2). Next: brick 6 (issue #8).
