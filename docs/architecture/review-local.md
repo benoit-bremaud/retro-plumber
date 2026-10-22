@@ -38,7 +38,7 @@ _None._
 # Local review — retro-plumber (branch `chore/sonarqube`, repository conformity)
 
 - Date: 2026-10-22 · Commit: b4dd2c4 · Scope: `main...HEAD` (12 files, config and docs only, no code)
-- Verdict: ship · Must 0 · Should 1 · Nice 1
+- Verdict: ship · Must 0 · Should 1 (fixed) · Nice 1
 
 ## Pre-merge gate (head SHA b4dd2c4)
 | Step | Result |
@@ -54,7 +54,7 @@ _None._
 _None._
 
 ## 🟡 Should Have
-- `SECURITY.md:8` `[security]` · private vulnerability reporting is **disabled** on the repository, yet the policy tells reporters to use it · owner enables it in Settings → Code security (a repository setting, not changed by the agent).
+- `SECURITY.md:8` `[security]` · private vulnerability reporting was disabled while the policy pointed to it · **fixed 2026-10-22**: the owner enabled it in Settings → Code security (verified through the API).
 
 ## 🔵 Nice to Have
 - `.github/dependabot.yml` `[correctness]` · only the `github-actions` ecosystem and CodeQL `actions` are configured · add `npm` and `javascript-typescript` with the first code brick (noted in both files).
