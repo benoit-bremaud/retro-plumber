@@ -31,8 +31,8 @@ sequenceDiagram
         Scene-->>FL: ask to swap or cancel
     else free or confirmed swap
         Scene->>Bind: assign(action, code)
-        Bind-->>Scene: updated bindings
-        Scene-->>FL: updated bindings + write request
+        Bind-->>Scene: done (the owned bindings record mutated in place)
+        Scene-->>FL: write request referencing the same bindings record
         FL->>Store: write(bindings)
         alt storage unavailable
             Store-->>FL: failure, applies for this session only

@@ -12,7 +12,7 @@
 | 2 Coverage | not applicable (no code); every new diagram carries source, context and notes |
 | 3 SonarQube | ✅ PASSED |
 | 4 Secrets | ✅ gitleaks clean (main..HEAD) · no tracked .env · diff read: nothing sensitive, no third-party names |
-| 5 QA pass | smoke only (docs diff): all 7 changed diagrams (02, 03, 04, 10, 11, 15, 16) render with mmdc, no error |
+| 5 QA pass | smoke only (docs diff): all 8 changed diagrams (02, 03, 04, 08, 10, 11, 15, 16) render with mmdc, no error |
 - Gate: **GREEN** (pending Codex review)
 
 ## Nice to Have
