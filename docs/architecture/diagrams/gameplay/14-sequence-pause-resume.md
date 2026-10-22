@@ -17,7 +17,7 @@ sequenceDiagram
     participant Br as Browser events
     participant In as InputPort adapter
     participant FL as FrameLoop (app)
-    participant LR as LevelRun (domain)
+    participant LR as Game / LevelRun (domain)
     participant Out as RenderPort
     alt key, Start or touch button
         P->>In: Enter, P, Start or pause button
@@ -45,6 +45,7 @@ sequenceDiagram
             Note over LR: all timers frozen except pauseLockFrames, which counts down
             opt toggle pressed or tapped to resume, lock is zero and no auto-pause bit
                 LR->>LR: toggle accepted, paused = false, pauseLockFrames = 43
+                Note over LR: remaining accumulated steps of this frame run as playing (06)
             end
             LR-->>FL: new state
         end
@@ -55,6 +56,7 @@ sequenceDiagram
 
 ## Notes
 
+- `Game / LevelRun` is the same merged participant as in [06](06-sequence-tick.md): `Game` dispatches `step` to the active scene, which delegates to `LevelRun` (12 and 13 draw the two apart).
 - Tags. The 43-frame lock: **[src]**. Pause keys, auto-pause on blur or hidden page, "tap to
   resume" overlay, manual resume only: **[gen]** (GDD §9, Q7).
 - The adapter only turns a browser event into a bit of the snapshot; deciding what the bit means

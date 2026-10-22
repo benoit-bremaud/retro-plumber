@@ -14,7 +14,7 @@ in the domain; the only outgoing data is the list of events the app forwards to 
 ```mermaid
 sequenceDiagram
     participant FL as FrameLoop (app)
-    participant LR as LevelRun (domain)
+    participant LR as Game / LevelRun (domain)
     participant HP as HeroPhysics
     participant TC as TileCollision
     participant BB as BlockBump
@@ -73,6 +73,7 @@ sequenceDiagram
 
 ## Notes
 
+- `Game / LevelRun` is the same merged participant as in [06](06-sequence-tick.md): `Game` dispatches `step` to the active scene, which delegates to `LevelRun` (12 and 13 draw the two apart).
 - Tags. Head bump speed +1 px/frame, bump offsets 4 / 18 px, stomp bounce −4 px/frame, chain
   points and the +1 life at the chain's end: **[src]** (GDD §5, §4.2, §8). Stomp definition,
   contact test every frame, index-order resolution, 30-frame flattening, 50 points per brick:

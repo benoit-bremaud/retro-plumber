@@ -13,7 +13,7 @@ hero collects it: coin or growth item. All steps are 60 Hz `step` phases of the 
 ```mermaid
 sequenceDiagram
     participant FL as FrameLoop (app)
-    participant LR as LevelRun (domain)
+    participant LR as Game / LevelRun (domain)
     participant IP as ItemPool
     participant Ct as Contacts
     participant H as Hero
@@ -60,6 +60,7 @@ sequenceDiagram
 
 ## Notes
 
+- `Game / LevelRun` is the same merged participant as in [06](06-sequence-tick.md): `Game` dispatches `step` to the active scene, which delegates to `LevelRun` (12 and 13 draw the two apart).
 - Tags. Emergence timing (1 px every 4th frame for 16 px) and the +1 life at 100 coins:
   **[src]** (GDD §8). Coin 200 and growth item 1000 points: **[gen]**, unverified (OQ3). Growth
   item ending invulnerability: **[gen]** (GDD §4.3).
