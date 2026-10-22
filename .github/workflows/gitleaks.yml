@@ -26,8 +26,11 @@ jobs:
           persist-credentials: false
       - uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
         env:
-          # Used by the action to comment on pull requests.
+          # Needed by the action to list the commits of a pull request (read-only).
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Least privilege: the job has no `pull-requests: write`, so inline PR comments are
+          # disabled on purpose. A leak still fails the check and appears in the job summary.
+          GITLEAKS_ENABLE_COMMENTS: 'false'
           # No GITLEAKS_LICENSE: required for organisation accounts only, not for
           # personal accounts (gitleaks-action README at v3.0.0).
           # Same binary as the local hooks. The action defaults to 8.24.3, which predates
