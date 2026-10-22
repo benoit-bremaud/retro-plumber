@@ -5,6 +5,12 @@ human context: what was done, why, and by which PR.
 
 ---
 
+## 2026-10-22 (repository conformity, branch `chore/sonarqube`, issue #20)
+
+- PR #21 merged (103bf5a): Gitleaks (pinned binary, `-m`, base..head), CodeQL (actions), dependency review and Scorecard workflows, Dependabot, CODEOWNERS, PR template, SECURITY, CONTRIBUTING, CHANGELOG, `.gitleaks.toml`, local SonarQube config (project `retro-plumber`, gate PASSED). Private vulnerability reporting enabled by the owner.
+- Codex found 4 real issues on the workflows (read-only token, first-parent blind spot, merge-commit diffs); all fixed, replies inline.
+- Open: `main` branch protection and git hooks are deferred (after this merge, owner action); no GitHub kanban project exists for the repository; npm Dependabot and CodeQL JavaScript join with the first code brick.
+
 ## 2026-10-22 (brick 5, branch `docs/uml-sequences`, issue #7)
 
 - Sequence diagrams for the critical flows: 10 collisions (stomp, block hit), 11 item pickup, 12 flag and tally, 13 death and retry, 14 pause and resume. Traceability matrix v0.2 (UC1/UC2 cells, reverse check, hand-off of 13 to UC3/UC4).
