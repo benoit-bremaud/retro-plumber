@@ -1,4 +1,5 @@
 # Secret scanning — any leaked secret fails the run (required check on `main`).
+# `-m` makes git log print the diff of merge commits too (conflict-resolution content).
 # Runs the pinned gitleaks binary instead of gitleaks-action: the action hard-codes
 # `--no-merges --first-parent`, which skips commits that only a merge's second parent introduced.
 # Pull requests scan every commit reachable from the head and not from the base; push and the
@@ -40,7 +41,7 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: ./gitleaks git --verbose --redact --log-opts="${BASE_SHA}..${HEAD_SHA}"
+        run: ./gitleaks git --verbose --redact --log-opts="-m ${BASE_SHA}..${HEAD_SHA}"
       - name: Scan full history
         if: github.event_name != 'pull_request'
-        run: ./gitleaks git --verbose --redact
+        run: ./gitleaks git --verbose --redact --log-opts="-m --all"
