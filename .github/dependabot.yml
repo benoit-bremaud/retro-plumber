@@ -1,0 +1,15 @@
+# Dependabot — keeps the SHA-pinned GitHub Actions in .github/workflows current.
+# Each bump PR carries the new SHA and refreshes the trailing "# vX.Y.Z" comment.
+# An `npm` block joins with the first code brick (no package.json yet).
+version: 2
+updates:
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+    open-pull-requests-limit: 5
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: 'chore(deps)'
