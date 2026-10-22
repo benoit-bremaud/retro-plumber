@@ -107,8 +107,8 @@ classDiagram
     }
     class Contacts {
         <<module>>
-        +heroVsEnemies(hero, enemies) void
-        +heroVsItems(hero, items) void
+        +heroVsEnemies(hero, enemies, session) void
+        +heroVsItems(hero, items, session) void
     }
     class ScoreTables {
         <<constants>>
