@@ -57,7 +57,11 @@ sequenceDiagram
         end
         Note over Ct: hero vy set to -4 px/frame, gravity pair unchanged
     else touched from the side or below
-        Ct-->>LR: hero hit (see diagrams 13 and 05)
+        alt hero is Big or Small (not invulnerable)
+            Ct-->>LR: hero hit (see diagrams 13 and 05)
+        else hero is SmallInvulnerable
+            Note over Ct: contact ignored, hero unchanged (05)
+        end
     end
     LR-->>FL: new state + events (stomp, brick-broken, bump...)
     FL->>Snd: play(events)

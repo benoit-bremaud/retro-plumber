@@ -32,19 +32,23 @@ sequenceDiagram
             LR->>IP: stepAll(grid)
             Note over IP: rises 1 px every 4th frame for 16 px, about 64 frames
         end
-        loop each step until the hero overlaps the growth item
+        loop each step until the hero overlaps the growth item or it leaves the playfield
             FL->>LR: step(state, snapshot)
             LR->>IP: stepAll(grid)
             Note over IP: growth item slides right 1 px/frame, turns at walls, falls off ledges
             LR->>Ct: heroVsItems(hero, items)
         end
         Note over LR: only a growth item is ever in ItemPool
-        Ct->>Sess: add 1000 points
-        Ct->>H: size Small to Big
-        opt hero was invulnerable
-            Ct->>H: invulnFrames reset to 0
+        alt hero overlaps the growth item
+            Ct->>Sess: add 1000 points
+            Ct->>H: size Small to Big
+            opt hero was invulnerable
+                Ct->>H: invulnFrames reset to 0
+            end
+            Ct->>IP: release slot
+        else item fell into a pit or left 2 columns behind the camera
+            IP->>IP: despawn, release slot, no points
         end
-        Ct->>IP: release slot
     end
     LR-->>FL: new state + events (coin, growth...)
     FL->>Snd: play(events)
