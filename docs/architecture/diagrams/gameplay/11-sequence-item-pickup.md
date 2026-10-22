@@ -25,6 +25,8 @@ sequenceDiagram
         opt coins reach 100
             LR->>Sess: lives + 1, coins reset to 0
         end
+        LR-->>FL: new state + events (coin)
+        FL->>Snd: play(events)
     else the bumped block holds the growth item
         LR->>IP: activate(GrowthItem, col, row)
         LR-->>FL: new state (this step ends)
@@ -49,12 +51,11 @@ sequenceDiagram
             else item still active
                 Note over IP: stays in the pool, next step
             end
-            LR-->>FL: new state (item still active, picked up or despawned)
+            LR-->>FL: new state + events (growth, if picked up)
+            FL->>Snd: play(events)
         end
         Note over LR: only a growth item is ever in ItemPool
     end
-    LR-->>FL: new state + events (coin, growth...)
-    FL->>Snd: play(events)
 ```
 
 ## Notes
