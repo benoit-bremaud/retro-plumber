@@ -27,16 +27,19 @@ sequenceDiagram
         end
     else the bumped block holds the growth item
         LR->>IP: activate(GrowthItem, col, row)
+        LR-->>FL: new state (this step ends)
         loop each following step while the growth item emerges
             FL->>LR: step(state, snapshot)
             LR->>IP: stepAll(grid)
             Note over IP: rises 1 px every 4th frame for 16 px, about 64 frames
+            LR-->>FL: new state
         end
         loop each step until the hero overlaps the growth item or it leaves the playfield
             FL->>LR: step(state, snapshot)
             LR->>IP: stepAll(grid)
             Note over IP: growth item slides right 1 px/frame, turns at walls, falls off ledges
             LR->>Ct: heroVsItems(hero, items)
+            LR-->>FL: new state
         end
         Note over LR: only a growth item is ever in ItemPool
         alt hero overlaps the growth item

@@ -30,6 +30,7 @@ sequenceDiagram
             FL->>G: step(state, snapshot)
             G->>LR: step(run, snapshot)
             LR-->>G: hop in progress, or finished below the screen
+            G-->>FL: new state
         end
         G->>Sess: lives - 1
         alt lives left

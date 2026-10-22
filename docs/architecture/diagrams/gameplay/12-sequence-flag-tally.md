@@ -34,17 +34,20 @@ sequenceDiagram
         G->>LR: step(run, snapshot)
         Note over LR: snapshot ignored, hero slides down the pole
         LR-->>G: phase FlagSlide, done when on the ground
+        G-->>FL: new state
     end
     loop AutoWalk until the hero enters the goal house
         FL->>G: step(state, snapshot)
         G->>LR: step(run, snapshot)
         Note over LR: hero jumps off to the right, walks on forced input
         LR-->>G: phase AutoWalk, done when in the goal house
+        G-->>FL: new state
     end
     G->>G: scene Tally
     loop one timer unit per step while units remain
         FL->>G: step(state, snapshot)
         G->>Sess: add 50 points, timer - 1 unit
+        G-->>FL: new state
     end
     G-->>FL: next scene = Title (last level of the slice)
 ```

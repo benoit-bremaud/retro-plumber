@@ -43,7 +43,7 @@ sequenceDiagram
             In-->>FL: InputSnapshot
             FL->>LR: step(state, snapshot)
             Note over LR: all timers frozen except pauseLockFrames, which counts down
-            opt player pressed pause again, or tapped to resume, and lock is zero
+            opt toggle pressed or tapped to resume, lock is zero and no auto-pause bit
                 LR->>LR: toggle accepted, paused = false, pauseLockFrames = 43
             end
             LR-->>FL: new state
