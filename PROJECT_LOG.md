@@ -5,6 +5,15 @@ human context: what was done, why, and by which PR.
 
 ---
 
+## 2026-10-23 (brick 6, branch `docs/uml-structure`, issue #8)
+
+- Structural UML completed: new 15 (meta classes: scenes with their payloads, `Persisted`, `Save`, `Bindings`, `Options`, `InputSnapshot`, `StepOutput`) and 16 (data crossing the ports per frame); fixes to 02 (Esc is not a pause trigger, Paused is a substate of Playing), 03 (ItemPool, Contacts, save/bindings/i18n/audio modules), 04 (Contacts and LevelRun dependencies, session passed to the contact handlers), 08, 10 and 11 (in-place bindings, session argument). Matrix v0.3 (G1 closed).
+- MCDA D5 scope: B fixes + meta class + tick data-flow 410/500 vs A 385 vs C 360 (fragile: A leads when KISS weighs 35 and coverage 15, fallback A).
+- review-local green (docs-only), SonarQube PASSED, gitleaks clean, mmdc OK on the 8 edited diagrams. Codex ran about 15 rounds (about 40 valid P2 points, mostly cross-diagram consistency and the no-allocation contract); each answered inline, threads left open. Codex hit its usage limit before reviewing the last commits (029893a to d4f7752).
+- Convention kept: sequences 06–14 write `step(state, snapshot)` and "new state" as shorthand for the owned `Game` updated in place; the precise form is `step(snapshot, out)` in 15.
+- Merged: PR #26 squash-merged (33fb22d), branch deleted, issue #8 closed; epic #11 checklist updated (#6, #7, #8).
+- Open: OQ1–OQ3 and G3 (GDD revision, own PR), GameOver delay rule, field names of 15 indicative until the first code brick, 4 Dependabot action bumps (#22–#25, plan: codeql lot then scorecard). Next: brick 7 (issue #9).
+
 ## 2026-10-22 (repository conformity, branch `chore/sonarqube`, issue #20)
 
 - PR #21 merged (103bf5a): Gitleaks (pinned binary, `-m`, base..head), CodeQL (actions), dependency review and Scorecard workflows, Dependabot, CODEOWNERS, PR template, SECURITY, CONTRIBUTING, CHANGELOG, `.gitleaks.toml`, local SonarQube config (project `retro-plumber`, gate PASSED). Private vulnerability reporting enabled by the owner.
