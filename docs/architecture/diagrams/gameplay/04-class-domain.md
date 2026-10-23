@@ -107,8 +107,8 @@ classDiagram
     }
     class Contacts {
         <<module>>
-        +heroVsEnemies(hero, enemies) void
-        +heroVsItems(hero, items) void
+        +heroVsEnemies(hero, enemies, session) void
+        +heroVsItems(hero, items, session) void
     }
     class ScoreTables {
         <<constants>>
@@ -127,7 +127,15 @@ classDiagram
     HeroPhysics ..> MovementTables
     HeroPhysics ..> Hero
     TileCollision ..> TileGrid
+    LevelRun ..> HeroPhysics
+    LevelRun ..> TileCollision
+    LevelRun ..> Contacts
+    Contacts ..> Hero
+    Contacts ..> EnemyPool
+    Contacts ..> ItemPool
     Contacts ..> ScoreTables
+    Contacts ..> Session
+    LevelRun ..> ScoreTables
     EnemyPool --> EnemyKind
     ItemPool --> ItemKind
 ```
@@ -142,5 +150,7 @@ classDiagram
 - Pools are preallocated (no allocation in the loop). The stomp chain counter lives on the hero
   (reset on landing); each kicked shell keeps its own `chainIndex`.
 - `BlockBump` is the short-lived record that lets a bumped block hurt the enemy standing on it.
+- `LevelRun` calls the three stateless modules (`HeroPhysics`, `TileCollision`, `Contacts`) in the order of [06](06-sequence-tick.md); `Contacts` reads the hero and the pools and uses `ScoreTables` for stomp chains and updates `Session` (points, lives, coins); `LevelRun` uses `ScoreTables` for the flag bands ([12](12-sequence-flag-tally.md)).
+- Meta types (scenes, save, bindings, catalogue) are in [15](../meta/15-class-meta.md).
 - `RandomSource` (seeded) is omitted: the slice has no random rule (YAGNI).
 - The flag sequence (slide, tally) is a `LevelRun` phase, see `05-state-hero.md`.

@@ -37,7 +37,7 @@ sequenceDiagram
                 Note over IP: rises 1 px every 4th frame for 16 px, about 64 frames
             else out of the block
                 Note over IP: slides right 1 px/frame, turns at walls, falls off ledges
-                LR->>Ct: heroVsItems(hero, items)
+                LR->>Ct: heroVsItems(hero, items, session)
             end
             alt hero overlaps the growth item
                 Ct->>Sess: add 1000 points

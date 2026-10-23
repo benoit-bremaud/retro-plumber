@@ -28,7 +28,10 @@ flowchart TB
         Game["game, scenes"]
         Physics["physics"]
         Level["level"]
-        Entities["entities"]
+        Entities["entities: EnemyPool, ItemPool"]
+        Contacts["contacts"]
+        Meta["save, bindings, i18n"]
+        SoundTable["audio: event to sound table"]
     end
     Main --> Loop
     Main --> Canvas
@@ -48,6 +51,10 @@ flowchart TB
     Game --> Level
     Game --> Entities
     Entities --> Physics
+    Game --> Contacts
+    Contacts --> Entities
+    Game --> Meta
+    Game --> SoundTable
 ```
 
 ## Notes
@@ -60,4 +67,5 @@ flowchart TB
 - Each port is small and client-specific (ISP); tests replace them with fakes (ADR-0005).
 - The app reads `InputPort` and passes an input snapshot to `step`; the domain never reads input
   or the clock itself.
-- Not drawn: `save`, `i18n`, `audio` domain modules (they use the ports above).
+- `contacts` (hero vs enemies and items) and the two pools are drawn since sequences [10](../gameplay/10-sequence-collisions.md) and [11](../gameplay/11-sequence-item-pickup.md) call them (matrix decision D4).
+- `save`, `bindings`, `i18n` and `audio` are pure domain modules: they transform data and return write requests or events, the app performs the I/O through the ports ([07](../meta/07-sequence-name-entry.md), [08](../meta/08-sequence-rebind.md)). Their types are in [15](../meta/15-class-meta.md).

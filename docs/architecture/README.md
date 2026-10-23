@@ -19,11 +19,12 @@ decisions; these diagrams are the visual index.
 | [meta/07-sequence-name-entry](diagrams/meta/07-sequence-name-entry.md) | How is a name saved (UC3)? |
 | [meta/08-sequence-rebind](diagrams/meta/08-sequence-rebind.md) | How is a control rebound (UC5)? |
 | [meta/09-data-flow-persistence](diagrams/meta/09-data-flow-persistence.md) | What is stored, where? |
+| [meta/15-class-meta](diagrams/meta/15-class-meta.md) | Which types hold scenes, save, bindings, texts? |
+| [meta/16-data-flow-tick](diagrams/meta/16-data-flow-tick.md) | What crosses the ports in a frame? |
 
 Use-case specifications: [use-case-specifications.md](use-case-specifications.md). Traceability:
 [traceability-matrix.md](traceability-matrix.md).
 
-Not drawn yet: render and audio diagrams; meta class and options-screen state (gaps G1, G3 of the
-traceability matrix).
+Not drawn yet: render and audio diagrams; options-screen state (gap G3 of the traceability matrix).
 
 QA evidence (screenshots) goes under [`qa/`](qa/) once there is something to run.

@@ -48,7 +48,7 @@ sequenceDiagram
         end
     end
     LR->>EP: stepAll(grid)
-    LR->>Ct: heroVsEnemies(hero, enemies), index order
+    LR->>Ct: heroVsEnemies(hero, enemies, session), index order
     alt no enemy overlaps the hero
         Note over Ct: nothing happens
     else hero overlaps an enemy, falling and feet above its centre (stomp)
